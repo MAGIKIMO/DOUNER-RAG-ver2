@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+
+<html lang="ko"><head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="no-referrer" name="referrer"/>
+<title>내 학교생활 · douner</title>
+<link href="style.css" rel="stylesheet"/><link href="mobile.css" rel="stylesheet"/><link href="account.css" rel="stylesheet"/><script defer="" src="planner.js"></script><script defer="" src="account.js"></script><script defer="" src="personal-brief.js"></script><script defer="" src="interests.js"></script>
+<link href="icons/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="personal-demo.css" rel="stylesheet"/></head><body data-personal-demo="true">
+<header class="site-header"><a class="brand" href="chat.html"><img alt="douner" class="brand-logo" height="96" src="icons/douner-logo.svg" width="354"/></a><nav aria-label="주 메뉴" class="dashboard-nav"><a href="chat.html">학교 정보 질문</a><a aria-current="page" href="personal-demo.html">내 학교생활</a></nav></header>
+<main class="account-page personal-dashboard">
+<div class="dashboard-intro"><h1>오늘의 학교생활</h1><p>오늘 먹을 것부터 놓치면 안 될 공지까지, 한곳에서.</p></div>
+<p id="account-status" role="status">연결 상태 확인 중…</p>
+<section hidden="" id="brief-panel">
+<p id="brief-summary" role="status"></p>
+<p id="today-glance" role="status"></p>
+<div id="brief-reminders" role="status"></div><div class="dashboard-top-grid"><div class="dashboard-card meal-card"><h3>오늘의 식단</h3><label for="brief-campus">캠퍼스</label><select id="brief-campus"><option value="2">승학</option><option value="1">구덕·부민</option></select><div id="brief-meals"></div>
+<a class="dashboard-text-link" href="meals.html">한 달 식단 보기 ↗</a></div><div class="dashboard-card notice-card"><h3>나에게 맞는 공지</h3><p>학과와 관심 분야에 맞는 공지의 핵심 내용을 모아봅니다.</p>
+
+<p class="micro">관심 설정은 이 브라우저에 저장합니다. 추천 공지는 지원 자격을 충족한다는 뜻이 아닙니다.</p>
+<p id="interest-status" role="status"></p><div id="interest-results"></div>
+<details class="interest-settings"><summary>학과·관심 분야 설정</summary><form id="interest-form">
+<label for="interest-department">학과</label><input id="interest-department" maxlength="100" placeholder="예: 컴퓨터공학과"/>
+<label for="interest-year">입학연도 (선택)</label><input id="interest-year" max="2100" min="1970" type="number"/>
+<fieldset><legend>관심 분야</legend>
+<label><input name="interest" type="checkbox" value="scholarship"/> 장학금</label><label><input name="interest" type="checkbox" value="career"/> 취업·진로</label><label><input name="interest" type="checkbox" value="program"/> 프로그램·공모전</label><label><input name="interest" type="checkbox" value="academic"/> 학사</label><label><input name="interest" type="checkbox" value="international"/> 국제교류</label>
+</fieldset><button type="submit">관심 설정 저장·공지 보기</button></form></details></div></div><div class="dashboard-bottom-grid"><div class="dashboard-card deadline-card"><h3>7일 안에 마감하는 LMS 과제</h3><p class="micro" id="brief-coverage"></p><ul id="brief-deadlines"></ul>
+</div><div class="dashboard-card schedule-card"><h3>내 일정 · 한국 시간</h3><p class="micro">아래에 직접 등록한 수업·시험 일정입니다. 휴강·보강은 자동 반영되지 않습니다.</p><ul id="brief-events"></ul>
+<details><summary>시간표·시험 일정 등록</summary>
+<p class="micro">이 브라우저에만 저장합니다. LMS 자료를 저장하는 기능은 아니며, 다른 기기와 동기화되지 않습니다.</p>
+<form id="schedule-form">
+<label for="schedule-name">수업 또는 일정 이름</label><input id="schedule-name" maxlength="100" placeholder="예: 운영체제 중간고사" required=""/>
+<label for="schedule-kind">종류</label><select id="schedule-kind"><option value="exam">시험·일회성 일정</option><option value="weekly">매주 반복 수업</option></select>
+<div id="schedule-once"><label for="schedule-date">날짜</label><input id="schedule-date" required="" type="date"/></div>
+<div hidden="" id="schedule-weekly"><label for="schedule-weekday">요일</label><select id="schedule-weekday"><option value="1">월</option><option value="2">화</option><option value="3">수</option><option value="4">목</option><option value="5">금</option><option value="6">토</option><option value="0">일</option></select>
+<label for="schedule-start">수업 시작일</label><input id="schedule-start" type="date"/><label for="schedule-end">수업 종료일</label><input id="schedule-end" type="date"/></div>
+<label for="schedule-time">시작 시간 (한국 시간)</label><input id="schedule-time" required="" type="time"/>
+<label for="schedule-place">강의실·장소 (선택)</label><input id="schedule-place" maxlength="100"/>
+<button type="submit">일정 저장</button><button id="schedule-clear" type="button">등록 일정 모두 삭제</button><p id="schedule-status" role="status"></p>
+</form></details>
+</div></div>
+<div class="dashboard-controls"><button id="brief-refresh" type="button">LMS·식단 새로고침</button>
+<button id="brief-notify" type="button">화면이 열려 있을 때 PC 알림 켜기</button><p class="micro" id="notify-status">앱을 닫으면 알림이 오지 않습니다. 백그라운드 푸시 기능은 아직 없습니다.</p>
+</div></section>
+<section class="dashboard-card login-card" hidden="" id="login-panel">
+<h2>내 학교생활 연결하기</h2><p>PC의 <code>http://localhost:8080</code>에서만 사용합니다. 서버에 설정한 본인 Canvas 토큰으로 조회합니다.</p>
+<label for="demo-key">발표용 비밀번호 (.env의 CANVAS_DEMO_PASSWORD)</label><input autocomplete="off" id="demo-key" maxlength="1000" type="password"/>
+<p class="micro">학교 비밀번호나 Canvas 토큰을 입력하는 칸이 아닙니다. 화면 공유 전에 로그인해 주세요. 한 시간 뒤 또는 서버 재시작 시 로그아웃됩니다.</p>
+<button disabled="" id="canvas-login" type="button">본인 데모 로그인</button>
+</section>
+<section class="dashboard-card lms-card" hidden="" id="private-panel"><div class="section-heading"><div><p class="eyebrow">MY LMS</p><h2>내 수업에 물어보기</h2></div></div>
+<button id="canvas-logout" type="button">데모 로그아웃</button>
+<p>본인의 수강 과목과 최근 30일 공지·과제를 조회합니다. 요일·교시 시간표, 출결·동영상 진도는 포함하지 않습니다.</p>
+<label for="canvas-course">내 수강 과목</label><select id="canvas-course"></select><p id="course-status" role="status"></p>
+<form id="private-form">
+<label for="private-question">질문</label><textarea id="private-question" maxlength="2000" placeholder="이 과목의 최근 공지를 요약해 줘" required="" rows="3"></textarea>
+<label class="consent"><input id="private-consent" required="" type="checkbox"/> 질문과 선택한 과목의 공지·과제·제출 상태를 설정된 외부 AI 제공자에게 전송하는 데 동의합니다.</label>
+<button id="private-send" type="submit">물어보기</button></form>
+<div aria-live="polite" id="private-answer"></div><ol id="private-sources"></ol>
+</section>
+<p class="micro">과목 자료와 질문·답변은 공용 DB 및 Chroma에 저장하지 않습니다. 발표 화면에 실제 과목 자료가 표시됩니다.</p>
+<details class="demo-notes"><summary>본인 연동 데모 안내</summary><p>개발자 본인 계정으로 검증하는 발표용 화면입니다. 학생 대상 OAuth 로그인은 학교 승인 후 연결합니다.</p><a href="account.html">OAuth 연동 안내 보기</a></details></main></body></html>

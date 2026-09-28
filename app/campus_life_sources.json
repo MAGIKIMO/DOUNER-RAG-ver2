@@ -1,0 +1,263 @@
+{
+  "reviewed_at": "2026-09-17",
+  "sources": [
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN034",
+      "title": "찾아오시는길",
+      "category": "학교소개",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN201",
+      "title": "학생차량 운행시간표",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN204",
+      "title": "주차시설 안내",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN173",
+      "title": "학사일정",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN124",
+      "title": "학적",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN125",
+      "title": "복학",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN128",
+      "title": "재입학",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN129",
+      "title": "전과",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN159",
+      "title": "등록",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN100",
+      "title": "공결 안내 및 신청",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN265",
+      "title": "학사안내 FAQ",
+      "category": "학사안내",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN200",
+      "title": "증명서발급",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN202",
+      "title": "학생증 발급안내",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN203",
+      "title": "국제학생증 발급",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN205",
+      "title": "유용한 정보",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN190",
+      "title": "E-캠퍼스",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN196",
+      "title": "학생메일&오피스 365",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN286",
+      "title": "온라인 행사장소 신청",
+      "category": "동아광장",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Board/Board.do?mCode=MN174",
+      "title": "행사/모집",
+      "category": "동아광장",
+      "department": "",
+      "kind": "board",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "url": "https://www.donga.ac.kr/kor/CMS/Board/Board.do?mCode=MN176",
+      "title": "교외 공모전/모집안내",
+      "category": "동아광장",
+      "department": "",
+      "kind": "board",
+      "discovered_from": "https://www.donga.ac.kr/kor/Main.do"
+    },
+    {
+      "title": "도서관 이용시간",
+      "url": "https://library.donga.ac.kr/about-our-library/library-hours/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "그룹스터디실 이용",
+      "url": "https://library.donga.ac.kr/libaray-services/facilities/group-study-room/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "열람실 이용",
+      "url": "https://library.donga.ac.kr/libaray-services/facilities/reading-room/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "도서 대출·재대출·반납",
+      "url": "https://library.donga.ac.kr/libaray-services/using-materials/borrow/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "모바일 좌석배정",
+      "url": "https://library.donga.ac.kr/libaray-services/mobile-service/mobile-seat-allocation/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "모바일 도서관 이용증",
+      "url": "https://library.donga.ac.kr/libaray-services/mobile-service/mobile-id-card/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "도서관 층별 안내",
+      "url": "https://library.donga.ac.kr/about-our-library/floor-guide/",
+      "category": "도서관",
+      "department": "",
+      "kind": "library",
+      "discovered_from": "https://library.donga.ac.kr/"
+    },
+    {
+      "title": "보건진료소 위치",
+      "url": "https://health.donga.ac.kr/health/CMS/Contents/Contents.do?mCode=MN012",
+      "category": "학생지원",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://health.donga.ac.kr/"
+    },
+    {
+      "title": "보건진료소 이용시간 및 업무",
+      "url": "https://health.donga.ac.kr/health/CMS/Contents/Contents.do?mCode=MN013",
+      "category": "학생지원",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://health.donga.ac.kr/"
+    },
+    {
+      "title": "병원 진료비 감면 안내",
+      "url": "https://health.donga.ac.kr/health/CMS/Contents/Contents.do?mCode=MN014",
+      "category": "학생지원",
+      "department": "",
+      "kind": "static",
+      "discovered_from": "https://health.donga.ac.kr/"
+    }
+  ],
+  "gaps": [
+    {
+      "url": "https://deco.donga.ac.kr/",
+      "reason": "robots.txt returned 503 during verification; not bypassed"
+    },
+    {
+      "url": "https://job.donga.ac.kr/",
+      "reason": "image-only migration banner linking new platform; no program body"
+    },
+    {
+      "url": "https://d-navi.donga-dongseo.ac.kr",
+      "reason": "new platform needs separate public-content adapter; no login data collected"
+    },
+    {
+      "url": "https://library.donga.ac.kr/community/notice/",
+      "reason": "custom notice adapter and image-only posters remain; regular hours alone do not prove today opening"
+    }
+  ]
+}

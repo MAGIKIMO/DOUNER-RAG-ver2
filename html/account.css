@@ -1,0 +1,9 @@
+.account-page{max-width:760px;margin:36px auto;padding:0 22px 90px;line-height:1.75}
+.account-page h1{font-size:30px}.account-page h2{font-size:21px}
+.account-page section{border-top:2px solid #182b43;margin-top:26px;padding-top:22px}
+.account-page label{display:block;margin:16px 0 6px}.account-page textarea,.account-page select{width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid #bac3cb;border-radius:4px}
+.account-page button{font:inherit;min-height:44px;padding:9px 16px;background:#182b43;color:white;border:0;border-radius:4px;cursor:pointer}.account-page button:disabled{opacity:.5;cursor:default}
+.account-actions{display:flex;gap:12px;flex-wrap:wrap}.account-page .consent{display:flex;align-items:flex-start;gap:10px;font-size:14px}.consent input{margin-top:6px}
+#private-answer{white-space:pre-wrap;margin-top:26px}#private-sources a{overflow-wrap:anywhere}.account-page [hidden]{display:none}
+#demo-key{display:block;width:100%;font:inherit;font-size:16px;padding:12px;border:1px solid #bac3cb;border-radius:4px}
+.interest-card{border-top:1px solid #c9d0d8;padding:18px 0}.interest-card h4{font-size:18px;margin:0}.interest-card pre,.notice-answer{white-space:pre-wrap;overflow-wrap:anywhere;font:inherit}.interest-card button{display:block;margin:12px 0}.interest-card blockquote{border-left:3px solid #bac3cb;padding-left:12px;margin-left:0}#interest-form fieldset label{display:inline-block;margin-right:12px}#interest-department,#interest-year{font:inherit;max-width:100%;padding:8px}

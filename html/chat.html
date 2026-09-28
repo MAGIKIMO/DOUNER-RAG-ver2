@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+
+<html lang="ko">
+<head>
+<meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
+<title>질문하기 · douner</title><link href="style.css" rel="stylesheet"/><link href="student.css" rel="stylesheet"/><script defer="" src="student.js"></script><script defer="" src="app.js"></script>
+<meta content="#182b43" name="theme-color"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="douner" name="apple-mobile-web-app-title"/>
+<link href="/manifest.webmanifest" rel="manifest"/><link href="/icons/apple-touch-icon.png" rel="apple-touch-icon"/>
+<link href="mobile.css" rel="stylesheet"/><script defer="" src="pwa.js"></script>
+<link href="icons/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="personal-demo.css" rel="stylesheet"/></head>
+<body>
+<a class="skip" href="#question">질문 입력으로 이동</a>
+<header class="site-header"><a class="brand" href="index.html"><img alt="douner" class="brand-logo" height="96" src="icons/douner-logo.svg" width="354"/></a><a class="personal-entry" href="personal-demo.html">내 학교생활 ↗</a></header>
+<main class="desk">
+<aside class="sidebar" id="student-settings">
+<h1>학교생활, <br/>물어보세요.</h1>
+<p class="intro">졸업요건부터 오늘의 궁금증까지.<br/>필요한 내용을 읽고 답해 드립니다.</p><p><a class="personal-entry" href="personal-demo.html">식단·추천 공지·내 LMS 한눈에 보기 →</a></p>
+<p><a href="meals.html">월별 식단 보기</a></p>
+<details class="side-section question-examples"><summary>질문 예시 보기</summary><div class="examples">
+<button data-question="졸업하려면 어떤 조건을 확인해야 해?" type="button">졸업하려면 어떤 조건을 확인해야 해?</button>
+<button data-question="조기졸업 조건 알려줘" type="button">조기졸업 조건 알려줘</button>
+<button data-question="유학생 관련 최근 공지 알려줘" type="button">유학생 관련 최근 공지 알려줘</button>
+<button data-question="장학금 신청 공지 알려줘" type="button">장학금 신청 공지 알려줘</button>
+<button data-question="컴퓨터공학과 최근 공지 알려줘" type="button">컴퓨터공학과 최근 공지 알려줘</button>
+</div></details>
+<section class="side-section"><h2>안내 자료의 출처</h2><ul class="source-list"><li><a href="https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN137" rel="noopener noreferrer" target="_blank">동아대학교 학사안내 ↗</a></li><li><a href="https://www.donga.ac.kr/kor/CMS/Board/Board.do?mCode=MN170" rel="noopener noreferrer" target="_blank">일반 · 학사 · 장학 공지 ↗</a></li><li><a href="https://global.donga.ac.kr/global/CMS/Board/Board.do?mCode=MN066" rel="noopener noreferrer" target="_blank">국제교류처 공지 ↗</a></li><li><a href="https://computer.donga.ac.kr/computer/CMS/Board/Board.do?mCode=MN044" rel="noopener noreferrer" target="_blank">컴퓨터공학과 공지 ↗</a></li></ul><p class="micro">수집된 본문과 추출이 완료된 PDF에서 답변합니다. 스캔 이미지·한글 파일은 아직 읽지 못할 수 있습니다.</p></section>
+<section class="system-state"><h2>시스템 상태</h2><p id="system-status" role="status">연결 확인 중…</p><button id="refresh-status" type="button">다시 확인</button></section>
+<details class="student-panel"><summary>내 기본 정보</summary>
+<p class="micro">선택 사항입니다. 이 브라우저에 저장하고, 질문할 때 참고합니다. 다른 기기와 동기화되지 않습니다.</p>
+<form id="profile-form">
+<label for="profile-department">학과</label><input id="profile-department" list="department-list" maxlength="100" placeholder="예: 컴퓨터공학과"/><datalist id="department-list"></datalist>
+<label for="profile-year">입학연도</label><input id="profile-year" max="2100" min="1970" placeholder="예: 2023" type="number"/>
+<label for="profile-campus">캠퍼스</label><select id="profile-campus"><option value="">선택 안 함</option><option value="2">승학</option><option value="1">구덕·부민</option></select>
+<button type="submit">기본 정보 저장</button><button id="profile-delete" type="button">기본 정보 삭제</button>
+</form>
+</details>
+<details class="student-panel"><summary>관심 공지 <span id="saved-count">0</span> <span id="due-count"></span></summary>
+<p class="micro" id="deadline-summary"></p><p class="micro">마감일은 원문 확인 후 직접 설정합니다. 이 브라우저에만 저장됩니다. 앱을 닫으면 알림이 발송되지 않습니다.</p><div id="saved-notices"></div>
+</details>
+<p class="micro" id="student-status" role="status"></p>
+</aside>
+<section aria-labelledby="chat-heading" class="chat-panel">
+<div class="chat-top"><div><h2 id="chat-heading">질문하기</h2></div><button class="text-button" id="clear-chat" type="button">새 대화</button></div>
+<details class="chat-settings"><summary>학과·언어 설정</summary>
+<fieldset class="language-picker"><legend>답변 언어</legend><div><button aria-pressed="true" data-lang="ko" type="button">한국어</button><button aria-pressed="false" data-lang="ja" type="button">日本語</button><button aria-pressed="false" data-lang="en" type="button">English</button><button aria-pressed="false" data-lang="zh" type="button">中文</button></div></fieldset>
+<div class="scope-picker"><label for="category">학과·자료 범위</label><select id="category"><option value="">전체 자료</option></select><label for="search-mode">답변 범위</label><select id="search-mode"><option value="auto">질문에 맞춰 찾기</option><option value="latest">최근 공지 요약</option><option value="semantic">내용으로 질문하기</option></select><p class="micro">학과별 조건을 질문할 때는 해당 학과를 선택해 주세요. 전체 자료에는 다른 학과의 안내도 포함됩니다.</p></div>
+</details>
+<div aria-live="polite" aria-relevant="additions text" class="messages" id="messages" role="log">
+<div class="welcome" id="welcome"><h3>어떤 도움이 필요한가요?</h3><p>“장학금은 어떻게 신청해?”<br/>평소 쓰는 말로 편하게 질문하세요.</p><p class="micro">전체 학번·비밀번호 등 개인정보는 입력하지 마세요.<br/>졸업요건은 학과와 입학연도를 확인한 뒤 안내합니다.</p></div>
+</div>
+<form class="composer" id="chat-form"><label for="question">질문 내용</label><div class="input-row"><textarea id="question" maxlength="2000" name="question" placeholder="예: 조기졸업을 신청하려면 어떤 조건이 필요한가요?" required="" rows="2"></textarea><button id="send" type="submit">보내기</button></div><p class="micro">Enter 전송 · Shift+Enter 줄바꿈 <span id="char-count">0 / 2,000</span></p></form>
+<div class="panel-note">신청 기간과 개인별 적용 조건은 반드시 원문과 담당 부서에서 확인하세요.</div>
+</section>
+</main>
+<footer class="site-footer"><span>douner</span><span>학생 졸업프로젝트 · 비공식 안내 서비스</span></footer>
+<dialog aria-labelledby="deadline-heading" id="deadline-dialog">
+<h2 id="deadline-heading">마감일 설정</h2><p id="deadline-title"></p>
+<p class="micro">공지 원문에서 신청 마감일을 확인하고 직접 설정해 주세요. 입력 칸을 비우면 마감일을 삭제합니다.</p>
+<form id="deadline-form"><label for="deadline-input">마감일시 (한국 시간)</label><input id="deadline-input" type="datetime-local"/><button type="submit">저장</button><button data-close-dialog="" type="button">취소</button></form>
+</dialog>
+<dialog aria-labelledby="report-heading" id="report-dialog">
+<h2 id="report-heading">답변 오류 신고</h2><p class="micro">전송하면 해당 질문·답변·참고자료와 작성한 신고 내용이 운영자에게 전달됩니다. 민감한 개인정보는 작성하지 마세요.</p>
+<details><summary>전송할 질문과 답변 확인</summary><pre id="report-preview"></pre></details>
+<form id="report-form">
+<label for="report-reason">신고 이유</label><select id="report-reason"><option value="wrong_answer">내용이 틀렸어요</option><option value="outdated">오래된 정보예요</option><option value="wrong_source">출처가 맞지 않아요</option><option value="missing_detail">필요한 내용이 빠졌어요</option><option value="other">기타</option></select>
+<label for="report-comment">추가 설명 (선택)</label><textarea id="report-comment" maxlength="1000" rows="3"></textarea>
+<p class="micro" id="report-status" role="status"></p><button id="report-send" type="submit">신고 전송</button><button data-close-dialog="" type="button">취소</button>
+</form>
+</dialog>
+</body></html>

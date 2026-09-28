@@ -1,0 +1,86 @@
+/* A quiet reading desk. Existing navy is the only accent. */
+:root { --paper:#fff; --white:#fff; --ink:#182b43; --blue:#244e77; --muted:#596776; --line:#d8dcde; --soft:#edf0f2; font-family:"Pretendard","Noto Sans KR","Malgun Gothic",system-ui,sans-serif; color:var(--ink); background:var(--paper); font-synthesis:none; }
+* { box-sizing:border-box; }
+body { margin:0; }
+a { color:inherit; text-underline-offset:4px; }
+button,textarea,select { font:inherit; color:inherit; }
+button,a { touch-action:manipulation; }
+button { cursor:pointer; }
+button:disabled { cursor:wait; opacity:.55; }
+:focus-visible { outline:2px solid var(--blue); outline-offset:4px; }
+.skip { position:fixed; top:-100px; left:20px; background:white; padding:12px; z-index:10; }
+.skip:focus { top:12px; }
+.site-header { max-width:1320px; margin:auto; padding:24px 40px; display:flex; align-items:center; justify-content:space-between; gap:20px; border-bottom:1px solid var(--line); }
+.brand { display:flex; gap:12px; align-items:center; text-decoration:none; font-size:19px; font-weight:700; }
+.brand-logo { display:block; width:174px; height:auto; flex-shrink:0; }
+@media(max-width:760px){.brand-logo{width:132px}.site-header{flex-wrap:wrap}.site-header .brand{margin-right:auto}}
+.brand small { display:block; margin-top:4px; color:var(--muted); font-size:11px; font-weight:400; }
+.brand-mark { font-family:serif; font-size:24px; letter-spacing:2px; padding-right:12px; border-right:1px solid var(--line); }
+.project-label { font-size:12px; color:var(--muted); }
+.desk { max-width:1320px; margin:auto; display:grid; grid-template-columns:240px minmax(0,1fr); gap:64px; padding:40px; }
+.sidebar h1 { font-size:34px; line-height:1.35; letter-spacing:-1.4px; margin:0 0 15px; font-weight:650; }
+.intro { font-size:14px; line-height:1.8; color:var(--muted); margin:0 0 34px; }
+h2 { font-size:13px; font-weight:650; margin:0 0 14px; }
+.side-section { margin-top:28px; }
+.question-examples summary { cursor:pointer; font-size:13px; font-weight:650; padding:8px 0; }
+.examples { display:grid; }
+.examples button { border:0; border-bottom:1px solid var(--line); background:none; text-align:left; padding:13px 0; font-size:13px; line-height:1.65; }
+.examples button:hover { color:var(--blue); text-decoration:underline; text-underline-offset:4px; }
+.source-list { list-style:none; margin:0; padding:0; font-size:12px; line-height:2.2; }
+.source-list a { text-decoration:none; }
+.source-list a:hover { text-decoration:underline; }
+.micro { font-size:12px; line-height:1.65; color:var(--muted); }
+.system-state { margin-top:26px; padding-top:20px; border-top:1px solid var(--line); }
+.system-state h2 { margin-bottom:8px; }
+.system-state p { display:inline; font-size:12px; color:var(--muted); }
+.system-state button { display:block; background:none; border:0; text-decoration:underline; text-underline-offset:3px; padding:0; margin-top:8px; color:var(--muted); font-size:12px; }
+.chat-panel { min-width:0; display:flex; flex-direction:column; align-self:start; height:calc(100dvh - 180px); min-height:630px; max-height:1000px; }
+.chat-top { display:flex; align-items:center; justify-content:space-between; gap:20px; padding:0 0 20px; border-bottom:2px solid var(--ink); }
+.chat-top h2 { font-size:23px; margin:0; letter-spacing:-.7px; }
+.text-button { background:none; border:1px solid var(--line); padding:8px 14px; font-size:12px; }
+.text-button:hover { border-color:var(--ink); }
+.language-picker { border:0; border-bottom:1px solid var(--line); padding:12px 0; margin:0; display:flex; align-items:center; gap:12px; }
+.language-picker legend { float:left; font-size:12px; color:var(--muted); padding:8px 0; margin-right:18px; }
+.language-picker div { display:flex; flex-wrap:wrap; gap:5px; }
+.language-picker button { background:none; border:0; border-bottom:2px solid transparent; padding:7px 9px; color:var(--muted); font-size:13px; }
+.language-picker button[aria-pressed=true] { border-color:var(--ink); color:var(--ink); font-weight:700; }
+.scope-picker { display:flex; flex-wrap:wrap; align-items:center; gap:8px 10px; padding:12px 0; }
+.scope-picker label { font-size:12px; color:var(--muted); }
+.scope-picker select { min-width:0; max-width:100%; padding:7px 24px 7px 8px; font-size:12px; background:white; border:1px solid var(--line); }
+.scope-picker .micro { flex-basis:100%; margin:0; font-size:11px; }
+.messages { flex:1; min-height:200px; overflow:auto; padding:28px 12px 20px 0; scrollbar-width:thin; }
+.welcome { padding:34px 0; }
+.welcome h3 { font-size:27px; font-weight:600; letter-spacing:-.8px; margin:0 0 18px; }
+.welcome p { color:var(--muted); font-size:15px; line-height:1.9; }
+.welcome .micro { margin-top:28px; font-size:12px; }
+.message { margin:0 0 32px; max-width:100%; }
+.message-label { font-size:12px; font-weight:650; margin:0 0 10px; }
+.bubble { font-size:15px; line-height:1.95; white-space:pre-wrap; overflow-wrap:anywhere; max-width:74ch; }
+.message.user { margin-left:15%; }
+.message.user .message-label { text-align:right; color:var(--muted); }
+.message.user .bubble { margin-left:auto; background:var(--soft); padding:12px 16px; border-radius:4px; }
+.references { margin-top:24px; padding-top:14px; border-top:1px solid var(--line); }
+.references h3 { font-size:12px; color:var(--muted); margin:0 0 4px; }
+.reference { padding:10px 0; }
+.reference a { font-size:13px; line-height:1.65; font-weight:500; }
+.reference p { margin:5px 0 0; color:var(--muted); font-size:11px; overflow-wrap:anywhere; }
+.reference p:nth-of-type(2) { display:none; } /* The title already links to the full source URL. */
+.composer { margin-top:auto; padding-top:16px; border-top:1px solid var(--line); }
+.composer label { display:block; font-size:12px; font-weight:650; margin-bottom:10px; }
+.input-row { display:flex; align-items:stretch; border:1px solid var(--ink); border-radius:4px; padding:8px; gap:8px; }
+.input-row textarea { flex:1; min-width:0; resize:vertical; min-height:62px; max-height:140px; border:0; background:white; padding:8px; font-size:15px; line-height:1.6; }
+.input-row button { align-self:flex-end; background:var(--ink); border:0; color:white; font-size:13px; padding:12px 20px; border-radius:2px; }
+.composer .micro { display:flex; justify-content:space-between; gap:12px; margin:8px 0; font-size:11px; }
+.panel-note { color:var(--muted); font-size:11px; line-height:1.6; padding-top:4px; }
+.site-footer { max-width:1240px; margin:0 auto; padding:18px 0; border-top:1px solid var(--line); display:flex; justify-content:space-between; gap:15px; font-size:11px; color:var(--muted); }
+.landing { max-width:1120px; margin:0 auto; padding:64px 40px; }
+.landing h1 { margin:0 0 24px; font-size:clamp(38px,5vw,62px); letter-spacing:-2px; font-weight:650; line-height:1.3; }
+.lead { font-size:17px; line-height:1.9; color:var(--muted); }
+.primary-link { display:inline-block; background:var(--ink); color:white; text-decoration:none; padding:14px 24px; margin:16px 0 54px; }
+.landing-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:40px; padding-top:24px; border-top:1px solid var(--line); }
+.landing-grid h2 { font-size:16px; }
+.landing-grid p { font-size:14px; line-height:1.8; color:var(--muted); }
+.notice-note { margin-top:40px; font-size:12px; color:var(--muted); }
+@media(max-width:1000px) { .desk { grid-template-columns:210px minmax(0,1fr); padding:28px; gap:30px; } .site-header { padding:20px 28px; } .site-footer { margin:0 28px; } .scope-picker select { max-width:220px; } }
+@media(max-width:760px) { .site-header { padding:18px 20px; } .project-label { display:none; } .desk { display:flex; flex-direction:column; padding:24px 20px; gap:24px; } .sidebar h1 { font-size:25px; margin-bottom:10px; } .sidebar h1 br,.intro br { display:none; } .intro { margin-bottom:16px; font-size:13px; } .side-section { margin-top:16px; } .sidebar section.side-section,.system-state { display:none; } .examples { grid-template-columns:1fr 1fr; gap:0 20px; } .examples button { padding:9px 0; font-size:12px; } .chat-panel { height:auto; min-height:600px; max-height:none; } .messages { max-height:60dvh; min-height:220px; padding-right:0; } .chat-top h2 { font-size:21px; } .welcome { padding:25px 0; } .welcome h3 { font-size:22px; } .bubble { font-size:15px; } .scope-picker select { max-width:calc(100% - 96px); } .site-footer { margin:0 20px; flex-direction:column; } .landing { padding:40px 24px; } .landing-grid { grid-template-columns:1fr; gap:18px; } }
+@media(prefers-reduced-motion:reduce) { * { scroll-behavior:auto!important; } }

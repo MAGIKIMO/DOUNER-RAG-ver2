@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <title>월별 식단 · douner</title>
+  <link rel="stylesheet" href="style.css"><link rel="stylesheet" href="meals.css"><script src="meals.js" defer></script>
+  <meta name="theme-color" content="#182b43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="apple-mobile-web-app-title" content="douner">
+  <link rel="manifest" href="/manifest.webmanifest"><link rel="apple-touch-icon" href="/icons/apple-touch-icon.png">
+  <link rel="stylesheet" href="mobile.css"><script src="pwa.js" defer></script>
+<link rel="icon" type="image/png" sizes="32x32" href="icons/favicon-32.png"></head>
+<body>
+  <a class="skip" href="#meal-month">식단 선택으로 이동</a>
+  <header class="site-header"><a class="brand" href="index.html"><img class="brand-logo" src="icons/douner-logo.svg" alt="douner" width="354" height="96"></a><a href="chat.html">질문하기</a></header>
+  <main class="meal-page">
+    <h1>월별 식단</h1>
+    <p class="intro">날짜를 선택하면 식당별 메뉴를 볼 수 있습니다.</p>
+    <form id="meal-filter" class="meal-filter">
+      <label for="meal-campus">캠퍼스</label><select id="meal-campus"><option value="2">승학</option><option value="1">구덕·부민</option></select>
+      <label for="meal-month">월</label><input type="month" id="meal-month" required min="2020-01" max="2099-12">
+      <button type="submit">불러오기</button><button type="button" id="meal-today">오늘</button>
+    </form>
+    <p id="meal-status" role="status" class="micro">식단을 불러오는 중입니다.</p>
+    <p class="micro">매일 오전 6시(한국 시간)에 공식 식단표를 확인합니다. 서버가 중지되어 있으면 다음 서버 실행 때 갱신합니다.<br>미등록은 공식 페이지에 메뉴가 없는 날짜, 수집 대기는 아직 확인하지 못한 날짜입니다. 휴무를 뜻하지 않습니다.</p>
+    <div class="meal-layout">
+      <section aria-label="날짜 선택"><table class="meal-calendar"><caption id="meal-caption">월별 식단</caption><thead><tr><th scope="col">월</th><th scope="col">화</th><th scope="col">수</th><th scope="col">목</th><th scope="col">금</th><th scope="col">토</th><th scope="col">일</th></tr></thead><tbody id="meal-days"></tbody></table></section>
+      <section class="meal-detail" aria-labelledby="meal-heading" aria-live="polite"><h2 id="meal-heading">날짜를 선택하세요.</h2><div id="meal-content"></div></section>
+    </div>
+    <p class="micro">메뉴와 가격은 식자재 수급 및 식당 운영에 따라 변경될 수 있습니다. 과거 기록은 수집 당시 자료이며, 월 전체가 미리 공개되는 것은 아닙니다.</p>
+  </main>
+  <footer class="site-footer"><span>douner</span><span>학생 졸업프로젝트 · 비공식 안내 서비스</span></footer>
+</body></html>
