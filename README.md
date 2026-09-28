@@ -1,3 +1,5 @@
+# DOUNER-RAG-ver2
+
 # 동아대학교 학사·공지 안내 — donga-rag-v2
 
 학생 및 유학생의 질문에 관련 학교 문서를 검색하고, 문서에 근거한 답변과 원문 링크를 제공하는 졸업프로젝트 MVP입니다. 기존 `douner_project`와 독립된 프로젝트입니다. HTML/CSS/Vanilla JS, FastAPI, MySQL 8.0, ChromaDB, CPU sentence-transformers를 사용합니다.
