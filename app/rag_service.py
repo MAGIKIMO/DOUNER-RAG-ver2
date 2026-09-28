@@ -110,6 +110,28 @@ def latest_notices(language="ko", category=None, limit=5, question="최신 공�
 
 
 def answer_question(question, language="ko", filters=None, search_mode="auto", conversation_context=None):
+    from .query_language import korean_search_query
+    search_question = korean_search_query(question)
+    result = _answer_question(search_question, language, filters, search_mode, conversation_context)
+    history = result.get('conversation_context', {}).get('history', [])
+    if len(history) >= 2 and history[-2].get('role') == 'user':
+        history[-2]['content'] = question[:2000]
+    result.setdefault('debug_info', {})['query_translated'] = search_question != question
+    if language == 'en':
+        messages = {
+            'exam_not_collected': 'I could not find the exam timetable for the requested department and semester in the collected documents. This does not mean no notice exists; the collection may need updating.',
+            'no_results': 'I could not find relevant documents in the collected sources. Please specify your department or course.',
+            'retrieval_unavailable': 'The document search service is unavailable. Please try again shortly.',
+            'llm_fallback': 'Answer generation failed. The related source documents are shown below.'}
+        status = result['debug_info'].get('status')
+        if status in messages:
+            result['answer'] = messages[status]
+            if history and history[-1].get('role') == 'assistant':
+                history[-1]['content'] = result['answer']
+    return result
+
+
+def _answer_question(question, language="ko", filters=None, search_mode="auto", conversation_context=None):
     from .conversation import is_smalltalk, conversational_answer, classify_social, remember, FOLLOWUP, changed_topic
     previous = dict(conversation_context or {})
     from .exam_chat import answer_exam
@@ -183,7 +205,7 @@ def answer_documents(question, language="ko", filters=None, search_mode="auto", 
 
 def compose_answer(question, chunks, language, debug, student=None):
     from .document_context import with_attachments
-    chunks = with_attachments(chunks, question, limit=60 if debug.get('retrieval_mode') == 'exam_schedule' else 8)
+    chunks = with_attachments(chunks, question, exam=debug.get('retrieval_mode') == 'exam_schedule')
     if not chunks:
         debug['status'] = 'no_current_evidence'
         return {'answer': {'ko': '첨부파일의 최신 내용을 확인하지 못했습니다. 자료 갱신 후 다시 질문해 주세요.',
@@ -240,6 +262,9 @@ The student's earned credits, course completion and expected graduation term are
         debug["error_code"] = exc.code if isinstance(exc, LLMError) else "provider_error"
         log.warning("llm_fallback code=%s", debug["error_code"])
         answer = FALLBACK
+    if debug.get('retrieval_mode') == 'exam_schedule' and debug['status'] == 'ok':
+        cited = set(map(int, re.findall(r'\[(\d+)\]', answer)))
+        sources = [source for source in sources if source['id'] in cited]
     result = {"answer": answer, "sources": sources, "debug_info": debug}
     if student:
         result["conversation_context"] = {"department":student["department"],"admission_year":student["admission_year"]}

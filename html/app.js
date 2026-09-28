@@ -4,6 +4,7 @@ const input = document.querySelector("#question");
 const messages = document.querySelector("#messages");
 const send = document.querySelector("#send");
 let language = "ko";
+let languageSelected = false;
 let busy = false;
 let conversationContext = null;
 const samples = {ko:"졸업하려면 어떤 조건을 확인해야 해?",ja:"日本語で留学生向けのお知らせを教えてください",en:"Please summarize the graduation requirements",zh:"请告诉我留学生相关通知"};
@@ -44,7 +45,7 @@ function addSources(article, sources) {
     }
     row.append(element("p", "", url.href));
     if (source.attachment) {
-      row.append(element('p', '', `첨부파일 · ${source.attachment.page}쪽`));
+      row.append(element('p', '', source.attachment.page ? `첨부파일 · ${source.attachment.page}쪽` : '첨부파일 · 질문에 관련된 내용 발췌'));
       try {
         const parentURL = new URL(source.attachment.parent_url);
         if (['https:', 'http:'].includes(parentURL.protocol)) {
@@ -61,6 +62,7 @@ function addSources(article, sources) {
 }
 document.querySelectorAll("[data-lang]").forEach(button => button.addEventListener("click", () => {
   language = button.dataset.lang;
+  languageSelected = true;
   document.querySelectorAll("[data-lang]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
   input.placeholder = samples[language];
 }));
@@ -84,7 +86,7 @@ form.addEventListener("submit", async event => {
   event.preventDefault();
   const question = input.value.trim();
   if (!question || busy) return;
-  const selectedLanguage = language;
+  const selectedLanguage = languageSelected ? language : (/[a-z]/i.test(question) && !/[가-힣ぁ-んァ-ン一-龥]/.test(question) ? 'en' : language);
   busy = true; send.disabled = true;
   document.querySelector("#clear-chat").disabled = true;
   addMessage("user", question);

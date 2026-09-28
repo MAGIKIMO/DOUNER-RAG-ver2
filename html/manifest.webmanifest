@@ -2,12 +2,12 @@
   "id": "/",
   "name": "douner",
   "short_name": "douner",
-  "description": "동아대 학사·공지 질문과 식단을 위한 학생 졸업프로젝트",
+  "description": "동아대학교 학생을 위한 학교생활 AI · 식단, 공지, 학사 안내",
   "lang": "ko",
-  "start_url": "/chat.html",
+  "start_url": "/index.html",
   "scope": "/",
   "display": "standalone",
-  "background_color": "#ffffff",
+  "background_color": "#f4f5f1",
   "theme_color": "#182b43",
   "icons": [
     {
@@ -24,6 +24,10 @@
     }
   ],
   "shortcuts": [
+    {
+      "name": "학교생활 홈",
+      "url": "/index.html"
+    },
     {
       "name": "질문하기",
       "url": "/chat.html"

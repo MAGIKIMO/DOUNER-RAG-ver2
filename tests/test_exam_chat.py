@@ -12,8 +12,9 @@ def database(monkeypatch):
     yield
     engine.dispose()
 
-def test_short_question_clarifies_department():
-    result = answer_exam('중간고사 시간표 어캐됨?')
+@pytest.mark.parametrize('question', ['중간고사 시간표 어캐됨?', '중간고사 관련', '중간고사', '중간 고사 알려줘', '시간표 알려줘 중간고사'])
+def test_short_question_clarifies_department(question):
+    result = answer_exam(question)
     assert result['debug_info']['status'] == 'clarification_required'
     assert result['conversation_context']['pending_question']
 
@@ -35,5 +36,6 @@ def test_scope_and_followup(monkeypatch):
 
 def test_missing_data_and_unrelated_chat():
     assert answer_exam('오늘 학교가기 싫다') is None
+    assert answer_exam('중간고사 망했어') is None
     result = answer_exam('2026년 2학기 컴공 중간고사 언제야?')
     assert result['debug_info']['status'] == 'exam_not_collected'

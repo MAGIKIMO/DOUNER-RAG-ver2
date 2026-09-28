@@ -4,7 +4,7 @@ from sqlalchemy import select
 from .db import Notice, session_scope
 
 
-def with_attachments(documents, question, limit=8):
+def with_attachments(documents, question, limit=8, exam=False):
     """Attach relevant pages to parent hits, including graduation/latest routes."""
     import re
     from .db import Attachment, AttachmentPage
@@ -27,6 +27,13 @@ def with_attachments(documents, question, limit=8):
             .where(Attachment.parent_id.in_(parent_ids), Attachment.status.in_(['ok', 'partial']))))
         terms = set(re.findall(r'[\w]{2,}', question.lower()))
         rows.sort(key=lambda row: (-sum(term in row[0].content.lower() for term in terms), row[1].page_number, row[0].id))
+        if exam:
+            from .exam_context import compact_exam_files
+            packed = compact_exam_files(rows, question)
+            for doc in packed:
+                if doc.source_id not in ids:
+                    documents.append(doc); ids.add(doc.source_id)
+            return documents
         added = 0
         for row, page, attachment in rows:
             if row.id not in ids and added < limit:

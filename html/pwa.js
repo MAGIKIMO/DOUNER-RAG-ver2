@@ -14,9 +14,9 @@
   const networkState=()=>{network.hidden=navigator.onLine;};
   window.addEventListener('online',networkState);window.addEventListener('offline',networkState);networkState();
   const nav=make('nav','');nav.className='mobile-nav';nav.setAttribute('aria-label','주요 메뉴');
-  for(const [title,href] of [['질문','chat.html'],['식단','meals.html'],['내 정보','chat.html#student-settings'],['앱 설치','install.html']]){
+  for(const [title,href] of [['홈','index.html'],['질문','chat.html'],['식단','meals.html'],['내 정보','chat.html#student-settings']]){
     const link=make('a',title);link.href=href;
-    if(location.pathname.endsWith(href) && !href.includes('#'))link.setAttribute('aria-current','page');
+    if((location.pathname.endsWith(href) || (location.pathname==='/' && href==='index.html')) && !href.includes('#'))link.setAttribute('aria-current','page');
     nav.append(link);
   }
   document.body.append(nav);

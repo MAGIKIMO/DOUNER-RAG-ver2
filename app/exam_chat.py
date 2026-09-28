@@ -6,12 +6,15 @@ from sqlalchemy import select
 from .db import Notice, session_scope
 from .document_context import as_document
 
-INTENT = re.compile(r'(중간고사|기말고사|중간\s*시험|기말\s*시험).*(시간표|일정|언제|시간|어캐|어떻게)|시험\s*시간표')
+INTENT = re.compile(r'중간\s*고사|기말\s*고사|중간\s*시험|기말\s*시험|시험\s*시간표')
 
 
 def answer_exam(question, language='ko', filters=None, context=None):
     context = dict(context or {})
     pending = context.get('pending_question', '') or ''
+    # Let feelings/study advice continue through the conversational router.
+    if re.search(r'힘들|싫|걱정|불안|망했|스트레스|공부법|공부\s*방법', question) and not re.search(r'시간표|일정|언제|몇\s*시|강의실|공지|관련', question):
+        return None
     if not INTENT.search(question) and not INTENT.search(pending):
         return None
     with session_scope() as session:

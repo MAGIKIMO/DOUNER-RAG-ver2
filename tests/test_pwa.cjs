@@ -10,7 +10,7 @@ function worker(){
   const cache={addAll:async requests=>{for(const r of requests){const p=new URL(r.url).pathname;assert.ok(fs.existsSync(path.join(root,p)));stored.set(p,new Response('cached:'+p));}},match:async p=>stored.get(p)?.clone()};
   const self={location:{origin:'https://example.org'},addEventListener:(name,fn)=>handlers[name]=fn,skipWaiting:()=>{skipped++;}};
   const context=vm.createContext({self,URL,Request:class{constructor(url){this.url=new URL(url,self.location.origin).href;}},
-    caches:{open:async()=>cache,keys:async()=>['donga-ui-v0','donga-ui-v1','donga-ui-v2','donga-ui-v3','another-app-cache'],delete:async key=>removed.push(key)},
+    caches:{open:async()=>cache,keys:async()=>['donga-ui-v0','donga-ui-v1','donga-ui-v2','donga-ui-v3','donga-ui-v4','another-app-cache'],delete:async key=>removed.push(key)},
     fetch:async()=>{calls++;throw Error('offline');}});
   vm.runInContext(fs.readFileSync(path.join(root,'sw.js'),'utf8'),context);
   return {handlers,stored,removed,get skipped(){return skipped;},get calls(){return calls;},context};
@@ -57,7 +57,7 @@ test('online content is fresh and API content cannot enter the cache',async()=>{
 });
 test('activation only removes this app old cache and updates require an explicit message',async()=>{
   const w=worker();let done;w.handlers.activate({waitUntil:p=>done=p});await done;
-  assert.deepEqual(w.removed,['donga-ui-v0','donga-ui-v1','donga-ui-v2']);assert.equal(w.skipped,0);
+  assert.deepEqual(w.removed,['donga-ui-v0','donga-ui-v1','donga-ui-v2','donga-ui-v3']);assert.equal(w.skipped,0);
   w.handlers.message({data:{type:'OTHER'}});assert.equal(w.skipped,0);
   w.handlers.message({data:{type:'APPLY_UPDATE'}});assert.equal(w.skipped,1);
 });

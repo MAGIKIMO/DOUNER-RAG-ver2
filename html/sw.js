@@ -1,8 +1,8 @@
 /* Only public UI assets are cached. API responses and user data never enter CacheStorage. */
 'use strict';
-const CACHE = 'donga-ui-v3';
+const CACHE = 'donga-ui-v4';
 const ASSETS = ['/index.html','/chat.html','/meals.html','/install.html','/offline.html',
-  '/style.css','/student.css','/meals.css','/mobile.css','/app.js','/student.js','/meals.js','/pwa.js',
+  '/home.css','/home.js','/personal-demo.css','/style.css','/student.css','/meals.css','/mobile.css','/app.js','/student.js','/meals.js','/pwa.js',
   '/manifest.webmanifest','/icons/douner-logo.svg','/icons/favicon-32.png','/icons/icon-192.png','/icons/icon-512.png','/icons/apple-touch-icon.png'];
 const ALLOWED = new Set(ASSETS);
 self.addEventListener('install', event => {
