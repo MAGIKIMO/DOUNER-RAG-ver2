@@ -20,7 +20,11 @@ def client(monkeypatch):
             return {'owner':True}
         def close(self):pass
     monkeypatch.setattr(demo,'CanvasClient',Canvas)
-    monkeypatch.setattr(demo,'answer',lambda snapshot,q: {'answer':'Owner answer','sources':[]})
+    def answer(client, question, course_id, language):
+        if course_id:
+            client.course_data(course_id)
+        return {'answer':'Owner answer','sources':[], 'language':language}
+    monkeypatch.setattr(demo,'ask_personal',answer)
     yield TestClient(app,base_url=ORIGIN)
     demo.sessions.clear()
 
@@ -72,3 +76,14 @@ def test_logout_rotation_and_expiration(client,monkeypatch):
     monkeypatch.setenv('CANVAS_DEMO_PASSWORD',KEY);login(client)
     monkeypatch.setattr(demo.time,'monotonic',lambda:10**15)
     assert client.get('/api/v1/personal-canvas/courses').status_code==401
+
+
+def test_auto_course_and_language_remain_authenticated(client):
+    args={'question':'이번 주 미제출 과제', 'language':'en', 'consent_to_llm':True}
+    assert client.post('/api/v1/personal-canvas/ask',headers={'Origin':ORIGIN},json=args).status_code==401
+    login(client)
+    result=client.post('/api/v1/personal-canvas/ask',headers={'Origin':ORIGIN},json=args)
+    assert result.status_code==200 and result.json()['language']=='en'
+    assert result.headers['cache-control']=='no-store'
+    args['language']='invalid'
+    assert client.post('/api/v1/personal-canvas/ask',headers={'Origin':ORIGIN},json=args).status_code==422

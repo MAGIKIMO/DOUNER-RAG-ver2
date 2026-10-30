@@ -22,6 +22,8 @@ from . import feedback
 from . import canvas_oauth
 from . import canvas_demo
 from . import notice_recommendations
+from . import notice_actions
+from .build_info import BUILD_ID
 
 logging.basicConfig(level=logging.INFO, format="%(asctime)s %(levelname)s %(name)s %(message)s")
 logging.getLogger("httpx").setLevel(logging.WARNING)
@@ -46,6 +48,7 @@ app.include_router(feedback.router)
 app.include_router(canvas_oauth.router)
 app.include_router(canvas_demo.router)
 app.include_router(notice_recommendations.router)
+app.include_router(notice_actions.router)
 
 
 @app.middleware('http')
@@ -69,6 +72,8 @@ class HistoryMessage(BaseModel):
 
 
 class ConversationContext(BaseModel):
+    calendar_question: str | None = Field(default=None, max_length=2000)
+    exam_question: str | None = Field(default=None, max_length=2000)
     pending_question: str | None = Field(default=None, max_length=2000)
     department: str | None = Field(default=None, max_length=100)
     admission_year: int | None = Field(default=None, ge=1970, le=2100)
@@ -81,7 +86,7 @@ class ConversationContext(BaseModel):
 
 class AskRequest(BaseModel):
     question: str = Field(min_length=1, max_length=2000)
-    language: Literal["ko", "ja", "en", "zh"] = "ko"
+    language: Literal["auto", "ko", "ja", "en", "zh"] = "auto"
     category: str | None = Field(default=None, max_length=100)
     search_mode: Literal["auto", "semantic", "latest"] = "auto"
     conversation_context: ConversationContext | None = None
@@ -113,7 +118,7 @@ def heartbeat():
     except Exception:
         pass
     # Liveness returns 200 even when dependencies are degraded; readiness is in JSON.
-    return {"status": "ok" if state["mysql"] == state["chroma"] == "ok" and state["index"] == "ready" else "degraded", "components": state}
+    return {"status": "ok" if state["mysql"] == state["chroma"] == "ok" and state["index"] == "ready" else "degraded", "components": state, "build_id": BUILD_ID}
 
 
 @app.get('/api/v1/meals')
@@ -146,12 +151,18 @@ def ask(request: AskRequest):
         if os.getenv("SAVE_CHAT_HISTORY", "false").lower() == "true":
             try:
                 with session_scope() as session:
-                    session.add(ChatHistory(question=request.question, answer=result["answer"], language=request.language))
+                    session.add(ChatHistory(question=request.question, answer=result["answer"], language=result.get('answer_language', request.language)))
             except Exception:
                 log.warning("chat_history_write_failed")
         return result
     finally:
         ask_slots.release()
+
+
+@app.post('/api/v1/ask/stream')
+async def ask_stream(request: AskRequest):
+    from .answer_stream import stream_response
+    return stream_response(ask, request)
 
 
 def run_maintenance(job):

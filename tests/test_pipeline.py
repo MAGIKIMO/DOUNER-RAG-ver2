@@ -152,6 +152,36 @@ def test_empty_and_unavailable_search(monkeypatch):
     assert "private-host" not in result["answer"]
 
 
+def freeze_before_korean_new_year(monkeypatch):
+    from datetime import timezone
+    class FrozenDateTime(datetime):
+        @classmethod
+        def now(cls, tz=None):
+            instant = datetime(2026, 12, 31, 16, 0, tzinfo=timezone.utc)
+            return instant.astimezone(tz) if tz is not None else instant.replace(tzinfo=None)
+    monkeypatch.setattr(rag_service, 'datetime', FrozenDateTime)
+
+
+def test_generation_prompt_uses_korean_date_even_on_utc_server(monkeypatch):
+    freeze_before_korean_new_year(monkeypatch)
+    notice(); ingest_chunks()
+    with db.session_scope() as session:
+        chunks = list(session.scalars(select(db.ContextChunk)))
+    def generate(system, user):
+        assert 'Today is 2027-01-01' in system
+        return '근거 답변 [1]'
+    monkeypatch.setattr(rag_service, 'generate_answer', generate)
+    result = rag_service.compose_answer('안내', chunks, 'ko', {})
+    assert result['debug_info']['status'] == 'ok'
+
+
+def test_latest_notice_published_today_in_korea_not_filtered_as_future(monkeypatch):
+    freeze_before_korean_new_year(monkeypatch)
+    notice(source_type='notice', title='한국 새해 공지', published_at=datetime(2027,1,1))
+    monkeypatch.setattr(rag_service, 'compose_answer', lambda q, docs, *a: {'titles':[d.title for d in docs]})
+    assert '한국 새해 공지' in rag_service.latest_notices()['titles']
+
+
 @pytest.mark.parametrize("provider", ["gemini", "openai", "groq"])
 def test_provider_success_and_quota(monkeypatch, provider):
     monkeypatch.setenv(provider.upper() + "_API_KEY", "test-only")

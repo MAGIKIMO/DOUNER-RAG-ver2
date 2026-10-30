@@ -92,6 +92,7 @@ class CanvasClient:
         self.client = httpx.Client(headers={'Authorization': 'Bearer '+token.strip(),
              'Accept': 'application/json+canvas-string-ids'}, timeout=20, follow_redirects=False, transport=transport)
         self.deadline = time.monotonic() + 120
+        self._course_list = None  # Request-local only; never shared across accounts.
 
     def close(self):
         self.client.close()
@@ -155,13 +156,18 @@ class CanvasClient:
         return {'status':'connected', 'canvas_user_id':str(data['id']), 'mode':'personal_cli_read_only'}
 
     def courses(self):
+        if self._course_list is not None:
+            return self._course_list
         data = self.listing('/api/v1/courses', {'enrollment_type':'student', 'enrollment_state':'active', 'include[]':'term'})
-        return {'complete':data['complete'], 'courses':[{'id':str(c['id']), 'name':str(c.get('name') or '이름 미제공'),
+        self._course_list = {'complete':data['complete'], 'courses':[{'id':str(c['id']), 'name':str(c.get('name') or '이름 미제공'),
                 'code':str(c.get('course_code') or ''), 'term':(c.get('term') or {}).get('name'),
                 'state':c.get('workflow_state'), 'url':self.origin+'/courses/'+identifier(c['id'])} for c in data['items'] if c.get('id')]}
+        return self._course_list
 
-    def course_data(self, course_id, days=30):
+    def course_data(self, course_id, days=30, *, kinds=('announcements', 'assignments')):
         course_id = identifier(course_id)
+        if not kinds or set(kinds) - {'announcements', 'assignments'}:
+            raise ValueError('invalid resource kinds')
         if not 1 <= days <= 365:
             raise ValueError('days must be 1..365')
         courses = self.courses()
@@ -177,6 +183,8 @@ class CanvasClient:
             ('assignments', f'/api/v1/courses/{course_id}/assignments', {'include[]':'submission'}),
         ]
         for kind, path, params in endpoints:
+            if kind not in kinds:
+                continue
             try:
                 response = self.listing(path, params)
                 result['coverage'][kind] = 'complete' if response['complete'] else 'partial_page_limit'
@@ -198,6 +206,7 @@ class CanvasClient:
                             'locked_for_user':row.get('locked_for_user'), 'submission_types':row.get('submission_types', []),
                             'submission_state':submission.get('workflow_state'), 'submitted_at':local_time(submission.get('submitted_at')),
                             'missing':submission.get('missing'), 'late':submission.get('late'), 'excused':submission.get('excused'),
+                            'redo_request':submission.get('redo_request'),
                             'url':self.origin+f'/courses/{course_id}/assignments/{row_id}'})
             except CanvasError as exc:
                 # Failed sections must never be presented as an empty successful list.

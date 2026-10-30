@@ -1,0 +1,163 @@
+[
+  {
+    "id": "calendar-ko",
+    "question": "2026학년도 2학기 동아대학교 기말시험 기간 알려줘",
+    "manual_checks": [
+      "공식 학사일정의 해당 연도/학기 날짜와 대조",
+      "학교 공통 기간을 개인 과목 시험으로 단정하지 않음"
+    ],
+    "expected_route": "academic_calendar",
+    "expected_statuses": [
+      "ok"
+    ],
+    "expected_language": "ko"
+  },
+  {
+    "id": "exam-electronics",
+    "question": "2026학년도 2학기 전자공학과 컴퓨터구조 03분반 중간고사 날짜 시간 강의실 알려줘",
+    "expected_text": [
+      "18:00",
+      "18:50",
+      "S06-0921"
+    ],
+    "manual_checks": [
+      "보관 원본 기준 10월 20일 18:00~18:50 S06-0921",
+      "공식 수정 공지가 있으면 최신 원본 우선"
+    ],
+    "expected_route": "exam_schedule",
+    "expected_statuses": [
+      "ok"
+    ]
+  },
+  {
+    "id": "exam-chemical",
+    "question": "2026학년도 2학기 화학공학과 반응공학I 02분반 중간고사 시간 강의실 알려줘",
+    "expected_text": [
+      "12:00",
+      "13:15",
+      "S06-0226"
+    ],
+    "manual_checks": [
+      "보관 상세표 기준 10월 22일 12:00~13:15 S06-0226",
+      "격자표 13:30과 상세표 13:15 차이를 임의로 통합하지 않음"
+    ],
+    "expected_route": "exam_schedule",
+    "expected_statuses": [
+      "ok"
+    ]
+  },
+  {
+    "id": "exam-civil",
+    "question": "2026학년도 2학기 건설시스템공학과 토질역학I 02분반 중간고사 언제 어디서 봐?",
+    "expected_text": [
+      "09:00",
+      "10:15",
+      "S12-0302"
+    ],
+    "manual_checks": [
+      "보관 원본 기준 10월 22일 09:00~10:15 S12-0302"
+    ],
+    "expected_route": "exam_schedule",
+    "expected_statuses": [
+      "ok"
+    ]
+  },
+  {
+    "id": "calendar-en",
+    "question": "When are the university-wide final exams at Dong-A University for the second semester of 2026?",
+    "manual_checks": [
+      "영어 질문을 이해하고 영어로 답변",
+      "공식 2026년 2학기 기말시험 기간과 대조"
+    ],
+    "expected_route": "academic_calendar",
+    "expected_statuses": [
+      "ok"
+    ],
+    "expected_language": "en"
+  },
+  {
+    "id": "calendar-ja",
+    "question": "東亜大学の2026年度2学期の期末試験期間はいつですか？",
+    "manual_checks": [
+      "일본어 질문을 이해하고 일본어로 답변",
+      "공식 2026년 2학기 기말시험 기간과 대조"
+    ],
+    "expected_route": "academic_calendar",
+    "expected_statuses": [
+      "ok"
+    ],
+    "expected_language": "ja"
+  },
+  {
+    "id": "calendar-zh",
+    "question": "东亚大学2026学年第二学期的期末考试时间是什么时候？",
+    "manual_checks": [
+      "중국어 질문을 이해하고 중국어로 답변",
+      "공식 2026년 2학기 기말시험 기간과 대조"
+    ],
+    "expected_route": "academic_calendar",
+    "expected_statuses": [
+      "ok"
+    ],
+    "expected_language": "zh"
+  },
+  {
+    "id": "graduation",
+    "question": "동아대 컴퓨터공학과 2023학번 졸업요건 알려줘",
+    "manual_checks": [
+      "학과/학번 적용 근거가 있는 조건만 답함",
+      "현재 공지와 해당 학번 규정을 구분",
+      "개인 졸업 가능 여부를 확정하지 않음"
+    ],
+    "expected_route": "graduation_rules",
+    "expected_statuses": [
+      "ok"
+    ]
+  },
+  {
+    "id": "meals",
+    "question": "오늘 승학캠퍼스 식단 알려줘",
+    "manual_checks": [
+      "한국 날짜와 캠퍼스 일치",
+      "없으면 다른 날 메뉴를 오늘 메뉴로 제공하지 않음",
+      "식당별 식단과 수집 시점 확인"
+    ],
+    "expected_route": "meals",
+    "expected_statuses": [
+      "ok",
+      "not_published"
+    ]
+  },
+  {
+    "id": "smalltalk",
+    "question": "오늘 학교 가기 싫네 너무 피곤하다",
+    "manual_checks": [
+      "자연스럽고 짧은 공감",
+      "휴강/출석 규칙 등을 지어내지 않음"
+    ],
+    "expected_route": "smalltalk",
+    "expected_statuses": [
+      "ok"
+    ]
+  },
+  {
+    "id": "unknown-year",
+    "question": "2035학년도 2학기 동아대학교 기말시험 확정 날짜 알려줘",
+    "manual_checks": [
+      "수집되지 않은 미래 일정을 만들어내지 않음",
+      "2026년 일정을 2035년 것으로 대체하지 않음"
+    ],
+    "expected_route": "academic_calendar",
+    "expected_statuses": [
+      "calendar_not_collected"
+    ]
+  },
+  {
+    "id": "unknown-section",
+    "question": "2026학년도 2학기 전자공학과 컴퓨터구조 99분반 중간고사 강의실 알려줘",
+    "manual_checks": [
+      "없는 분반에 다른 분반 강의실을 배정하지 않음",
+      "자료 없음과 시험 없음은 구분"
+    ]
+  }
+]

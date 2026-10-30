@@ -4,7 +4,7 @@
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/><meta content="no-referrer" name="referrer"/>
 <title>내 학교생활 · douner</title>
 <link href="style.css" rel="stylesheet"/><link href="mobile.css" rel="stylesheet"/><link href="account.css" rel="stylesheet"/><script defer="" src="planner.js"></script><script defer="" src="account.js"></script><script defer="" src="personal-brief.js"></script><script defer="" src="interests.js"></script>
-<link href="icons/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="personal-demo.css" rel="stylesheet"/></head><body data-personal-demo="true">
+<link href="icons/favicon-32.png" rel="icon" sizes="32x32" type="image/png"/><link href="personal-demo.css" rel="stylesheet"/><link href="tasks.css" rel="stylesheet"/><script defer="True" src="task-core.js"></script><script defer="True" src="tasks.js"></script></head><body data-personal-demo="true">
 <header class="site-header"><a class="brand" href="chat.html"><img alt="douner" class="brand-logo" height="96" src="icons/douner-logo.svg" width="354"/></a><nav aria-label="주 메뉴" class="dashboard-nav"><a href="chat.html">학교 정보 질문</a><a aria-current="page" href="personal-demo.html">내 학교생활</a></nav></header>
 <main class="account-page personal-dashboard">
 <div class="dashboard-intro"><h1>오늘의 학교생활</h1><p>오늘 먹을 것부터 놓치면 안 될 공지까지, 한곳에서.</p></div>
@@ -14,7 +14,6 @@
 <p id="today-glance" role="status"></p>
 <div id="brief-reminders" role="status"></div><div class="dashboard-top-grid"><div class="dashboard-card meal-card"><h3>오늘의 식단</h3><label for="brief-campus">캠퍼스</label><select id="brief-campus"><option value="2">승학</option><option value="1">구덕·부민</option></select><div id="brief-meals"></div>
 <a class="dashboard-text-link" href="meals.html">한 달 식단 보기 ↗</a></div><div class="dashboard-card notice-card"><h3>나에게 맞는 공지</h3><p>학과와 관심 분야에 맞는 공지의 핵심 내용을 모아봅니다.</p>
-
 <p class="micro">관심 설정은 이 브라우저에 저장합니다. 추천 공지는 지원 자격을 충족한다는 뜻이 아닙니다.</p>
 <p id="interest-status" role="status"></p><div id="interest-results"></div>
 <details class="interest-settings"><summary>학과·관심 분야 설정</summary><form id="interest-form">
@@ -22,7 +21,7 @@
 <label for="interest-year">입학연도 (선택)</label><input id="interest-year" max="2100" min="1970" type="number"/>
 <fieldset><legend>관심 분야</legend>
 <label><input name="interest" type="checkbox" value="scholarship"/> 장학금</label><label><input name="interest" type="checkbox" value="career"/> 취업·진로</label><label><input name="interest" type="checkbox" value="program"/> 프로그램·공모전</label><label><input name="interest" type="checkbox" value="academic"/> 학사</label><label><input name="interest" type="checkbox" value="international"/> 국제교류</label>
-</fieldset><button type="submit">관심 설정 저장·공지 보기</button></form></details></div></div><div class="dashboard-bottom-grid"><div class="dashboard-card deadline-card"><h3>7일 안에 마감하는 LMS 과제</h3><p class="micro" id="brief-coverage"></p><ul id="brief-deadlines"></ul>
+</fieldset><button type="submit">관심 설정 저장·공지 보기</button></form></details></div></div><div class="dashboard-card" id="task-mini"><h3>오늘 뭐부터 하지?</h3><p class="micro">저장한 할 일·등록 일정·조회된 LMS 과제를 시간순으로 모았어요. 미확인·기한 없는 과제는 별도 확인이 필요해요.</p><ol id="task-mini-list"></ol><a href="tasks.html">할 일·공지 변경 관리 →</a></div><div class="dashboard-bottom-grid"><div class="dashboard-card deadline-card"><h3>7일 안에 마감하는 LMS 과제</h3><p class="micro" id="brief-coverage"></p><ul id="brief-deadlines"></ul>
 </div><div class="dashboard-card schedule-card"><h3>내 일정 · 한국 시간</h3><p class="micro">아래에 직접 등록한 수업·시험 일정입니다. 휴강·보강은 자동 반영되지 않습니다.</p><ul id="brief-events"></ul>
 <details><summary>시간표·시험 일정 등록</summary>
 <p class="micro">이 브라우저에만 저장합니다. LMS 자료를 저장하는 기능은 아니며, 다른 기기와 동기화되지 않습니다.</p>
@@ -48,11 +47,13 @@
 </section>
 <section class="dashboard-card lms-card" hidden="" id="private-panel"><div class="section-heading"><div><p class="eyebrow">MY LMS</p><h2>내 수업에 물어보기</h2></div></div>
 <button id="canvas-logout" type="button">데모 로그아웃</button>
-<p>본인의 수강 과목과 최근 30일 공지·과제를 조회합니다. 요일·교시 시간표, 출결·동영상 진도는 포함하지 않습니다.</p>
+<p>여러 수강 과목의 미제출 과제와 마감일을 한 번에 확인하고, 최근 30일 공지의 내용을 물어보세요. 요일·교시 시간표, 출결·동영상 진도는 포함하지 않습니다.</p>
 <label for="canvas-course">내 수강 과목</label><select id="canvas-course"></select><p id="course-status" role="status"></p>
 <form id="private-form">
-<label for="private-question">질문</label><textarea id="private-question" maxlength="2000" placeholder="이 과목의 최근 공지를 요약해 줘" required="" rows="3"></textarea>
-<label class="consent"><input id="private-consent" required="" type="checkbox"/> 질문과 선택한 과목의 공지·과제·제출 상태를 설정된 외부 AI 제공자에게 전송하는 데 동의합니다.</label>
+<div class="personal-examples" aria-label="질문 예시"><button type="button" data-personal-question="이번 주 안 낸 과제 뭐 있어?">이번 주 미제출 과제</button><button type="button" data-personal-question="오늘 뭐부터 해야 해?">오늘 뭐부터 할까?</button><button type="button" data-personal-question="전체 과목 최근 공지 요약해 줘">최근 수업 공지</button></div>
+<label for="private-language">답변 언어</label><select id="private-language"><option value="auto">질문 언어에 맞추기</option value="ko">한국어</option><option value="en">English</option><option value="ja">日本語</option><option value="zh">中文</option></select>
+<label for="private-question">질문</label><textarea id="private-question" maxlength="2000" placeholder="이번 주 안 낸 과제 뭐 있어? / 운영체제 최근 공지 요약해 줘" required="" rows="3"></textarea>
+<label class="consent"><input id="private-consent" required="" type="checkbox"/> 내용 설명이 필요한 질문은 질문과 관련 수강 과목의 공지·과제·제출 상태를 설정된 외부 AI 제공자에게 전송하는 데 동의합니다. 미제출·마감 목록은 AI 전송 없이 조회합니다.</label>
 <button id="private-send" type="submit">물어보기</button></form>
 <div aria-live="polite" id="private-answer"></div><ol id="private-sources"></ol>
 </section>

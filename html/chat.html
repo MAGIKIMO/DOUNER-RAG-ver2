@@ -3,7 +3,7 @@
 <html lang="ko">
 <head>
 <meta charset="utf-8"/><meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>질문하기 · douner</title><link href="style.css" rel="stylesheet"/><link href="student.css" rel="stylesheet"/><script defer="" src="student.js"></script><script defer="" src="app.js"></script>
+<title>질문하기 · douner</title><link href="style.css" rel="stylesheet"/><link href="student.css" rel="stylesheet"/><script defer="" src="student.js"></script><script defer="" src="answer-stream.js"></script><script defer="" src="app.js"></script>
 <meta content="#182b43" name="theme-color"/><meta content="yes" name="apple-mobile-web-app-capable"/><meta content="douner" name="apple-mobile-web-app-title"/>
 <link href="/manifest.webmanifest" rel="manifest"/><link href="/icons/apple-touch-icon.png" rel="apple-touch-icon"/>
 <link href="mobile.css" rel="stylesheet"/><script defer="" src="pwa.js"></script>
@@ -14,7 +14,7 @@
 <main class="desk">
 <aside class="sidebar" id="student-settings">
 <h1>학교생활, <br/>물어보세요.</h1>
-<p class="intro">졸업요건부터 오늘의 궁금증까지.<br/>필요한 내용을 읽고 답해 드립니다.</p><p><a class="personal-entry" href="personal-demo.html">식단·추천 공지·내 LMS 한눈에 보기 →</a></p>
+<p class="intro">졸업요건부터 오늘의 궁금증까지.<br/>필요한 내용을 읽고 답해 드립니다.</p><p><a href="tasks.html">내 할 일 · 공지 변경 확인 →</a></p><p><a class="personal-entry" href="personal-demo.html">식단·추천 공지·내 LMS 한눈에 보기 →</a></p>
 <p><a href="meals.html">월별 식단 보기</a></p>
 <details class="side-section question-examples"><summary>질문 예시 보기</summary><div class="examples">
 <button data-question="졸업하려면 어떤 조건을 확인해야 해?" type="button">졸업하려면 어떤 조건을 확인해야 해?</button>
@@ -42,7 +42,7 @@
 <section aria-labelledby="chat-heading" class="chat-panel">
 <div class="chat-top"><div><h2 id="chat-heading">질문하기</h2></div><button class="text-button" id="clear-chat" type="button">새 대화</button></div>
 <details class="chat-settings"><summary>학과·언어 설정</summary>
-<fieldset class="language-picker"><legend>답변 언어</legend><div><button aria-pressed="true" data-lang="ko" type="button">한국어</button><button aria-pressed="false" data-lang="ja" type="button">日本語</button><button aria-pressed="false" data-lang="en" type="button">English</button><button aria-pressed="false" data-lang="zh" type="button">中文</button></div></fieldset>
+<fieldset class="language-picker"><legend>답변 언어</legend><div><button aria-pressed="true" data-lang="auto" type="button">자동 감지 / Auto</button><button aria-pressed="false" data-lang="ko" type="button">한국어</button><button aria-pressed="false" data-lang="ja" type="button">日本語</button><button aria-pressed="false" data-lang="en" type="button">English</button><button aria-pressed="false" data-lang="zh" type="button">中文</button></div></fieldset>
 <div class="scope-picker"><label for="category">학과·자료 범위</label><select id="category"><option value="">전체 자료</option></select><label for="search-mode">답변 범위</label><select id="search-mode"><option value="auto">질문에 맞춰 찾기</option><option value="latest">최근 공지 요약</option><option value="semantic">내용으로 질문하기</option></select><p class="micro">학과별 조건을 질문할 때는 해당 학과를 선택해 주세요. 전체 자료에는 다른 학과의 안내도 포함됩니다.</p></div>
 </details>
 <div aria-live="polite" aria-relevant="additions text" class="messages" id="messages" role="log">

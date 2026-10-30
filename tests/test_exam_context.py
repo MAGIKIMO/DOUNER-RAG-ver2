@@ -19,3 +19,23 @@ def test_general_schedule_budget_and_explicit_omission():
     docs=compact_exam_files([row(n,f'과목{n}') for n in range(40)],'중간고사 관련',budget=1000)
     assert len(docs)==1 and len(docs[0].chunk_text)<=1000
     assert '일부 행 생략' in docs[0].chunk_text
+
+
+def test_matching_file_selected_before_irrelevant_files():
+    rows = [row(1,'다른과목'),row(2,'또다른과목'),row(3,'운영체제')]
+    for i, (_,_,attachment) in enumerate(rows): attachment.id = str(i)
+    docs = compact_exam_files(rows, '운영체제 중간고사')
+    assert '운영체제' in docs[0].chunk_text
+
+
+def test_section_filter_excludes_other_section_time():
+    first, second = row(1,'운영체제'), row(2,'운영체제')
+    first[0].content += '\n분반 or 합반: 01'
+    first[0].content = first[0].content.replace('16:30', '09:00')
+    second[0].content += '\n분반 or 합반: 02'
+    docs = compact_exam_files([first,second], '운영체제 02분반 중간고사')
+    assert '16:30' in docs[0].chunk_text
+    assert '09:00' not in docs[0].chunk_text
+    missing = compact_exam_files([first,second], '운영체제 03분반 중간고사')
+    assert '일치하는 행' in missing[0].chunk_text
+    assert '09:00' not in missing[0].chunk_text and '16:30' not in missing[0].chunk_text

@@ -162,3 +162,28 @@ def test_extractor_flags_scanned_page_and_keeps_table_cells(monkeypatch):
     result = extract_pdf(b'%PDF-test')
     assert 'Test course | 3' in result[0]['text']
     assert result[1]['status'] == 'ocr_or_review_required' and not result[1]['text']
+
+
+def test_extractor_version_change_reprocesses_unchanged_file(monkeypatch):
+    row,item,_=parent()
+    calls=[]
+    monkeypatch.setattr(attachments,'extract',lambda blob:calls.append(blob) or pages())
+    fetcher=SimpleNamespace(download=lambda url:b'%PDF-test')
+    assert attachments.process(item.id,fetcher)=='extracted'
+    assert attachments.process(item.id,fetcher)=='unchanged'
+    monkeypatch.setattr(attachments,'EXTRACTOR_VERSION','new-parser')
+    assert attachments.process(item.id,fetcher)=='extracted'
+    assert len(calls)==2
+
+
+def test_public_exam_image_uses_new_pipeline_and_partial_evidence(monkeypatch):
+    from app import exam_vision
+    row,item,_=parent()
+    with db.session_scope() as session:
+        session.get(db.Notice,row.id).title='2026학년도 중간고사 시간표'
+    monkeypatch.setattr(exam_vision,'extract_image',lambda blob:{'page':1,'status':'partial','text':'확인된 시험 행입니다. 나머지는 미확인입니다.','label':'이미지 1'})
+    result=attachments.process(item.id,SimpleNamespace(download=lambda url:b'\x89PNG\r\n\x1a\nFAKE'))
+    assert result=='extracted'
+    with db.session_scope() as session:
+        assert session.get(db.Attachment,item.id).status=='partial'
+        assert session.scalar(select(func.count()).select_from(db.AttachmentPage))==1

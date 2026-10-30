@@ -113,8 +113,10 @@ def crawl_one(source, fetcher, cutoff, max_pages):
     return state,pages,count,f"stop={finish}; failed={failed}; cutoff={cutoff.date()}"
 
 
-def run(catalog_path=CATALOG, days=365, max_pages=200, retry_only=False):
+def run(catalog_path=CATALOG, days=365, max_pages=200, retry_only=False, boards_only=False):
     catalog=json.loads(Path(catalog_path).read_text(encoding="utf-8"))
+    if boards_only:
+        catalog = {**catalog, 'sources': [s for s in catalog['sources'] if s['kind'] == 'board']}
     init_db()
     with maintenance_lock():
         register(catalog)
@@ -146,6 +148,7 @@ if __name__ == "__main__":
     parser.add_argument("--days",type=int,default=365)
     parser.add_argument("--max-pages",type=int,default=200)
     parser.add_argument("--retry-only",action="store_true")
+    parser.add_argument("--boards-only",action="store_true", help="Refresh notice boards without static campus guides")
     args=parser.parse_args()
     if not 1 <= args.days <= 3650 or not 1 <= args.max_pages <= 2000: parser.error("Invalid days/max-pages")
-    run(args.catalog,args.days,args.max_pages,args.retry_only)
+    run(args.catalog,args.days,args.max_pages,args.retry_only,args.boards_only)

@@ -1,0 +1,575 @@
+{
+  "checked_at": "2026-10-29T11:32:08.943497+00:00",
+  "preflight": [
+    {
+      "check": "dependencies",
+      "passed": true,
+      "http": 200,
+      "seconds": 0.186,
+      "data": {
+        "status": "ok",
+        "components": {
+          "api": "ok",
+          "mysql": "ok",
+          "chroma": "ok",
+          "index": "ready"
+        }
+      }
+    },
+    {
+      "check": "/chat.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/personal-demo.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/tasks.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/meals.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/manifest.webmanifest",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "empty_question_rejected",
+      "passed": true,
+      "http": 422
+    },
+    {
+      "check": "anonymous_lms_denied",
+      "passed": true,
+      "http": 401
+    }
+  ],
+  "cases": [
+    {
+      "id": "calendar-ko",
+      "question": "2026학년도 2학기 동아대학교 기말시험 기간 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 0.603,
+      "response_valid": true,
+      "manual_checks": [
+        "공식 학사일정의 해당 연도/학기 날짜와 대조",
+        "학교 공통 기간을 개인 과목 시험으로 단정하지 않음"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "어느 학과의 중간·기말고사 시간표를 볼까요? 예: 컴퓨터공학과. 학과를 알려주시면 시험 날짜·시간·강의실을 확인해 드릴게요.",
+      "sources": [],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "clarification_required",
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 5.4,
+          "total": 540.5
+        },
+        "llm_calls": 0,
+        "llm_ms": 0
+      },
+      "answer_language": "ko",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "exam-electronics",
+      "question": "2026학년도 2학기 전자공학과 컴퓨터구조 03분반 중간고사 날짜 시간 강의실 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 10.047,
+      "response_valid": true,
+      "manual_checks": [
+        "보관 원본 기준 10월 20일 18:00~18:50 S06-0921",
+        "공식 수정 공지가 있으면 최신 원본 우선"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "2026학년도 2학기 전자공학과 컴퓨터구조 03분반의 세부 시험 날짜, 시간, 강의실 정보는 현재 수집된 자료에서 확인되지 않았습니다 [1].\n\n수집된 학사일정에 따르면 2026학년도 2학기 학교 공통 중간시험 기간은 2026년 10월 20일(화)부터 10월 26일(월)까지입니다 [1]. 다만 이 일정은 학교 공통 시험 기간일 뿐이며, 해당 학과나 개별 과목의 확정된 시험 시간표 및 강의실을 뜻하지 않습니다 [1].\n\n전자공학과 개별 과목의 세부 시험 일정 및 강의실은 수집된 자료에서 구분되어 확인되지 않았습니다 [1]. 추가 안내를 원하시는 경우 수강 학년 등 세부 정보를 함께 알려주시면 수집된 자료 범위 내에서 확인을 도와드리겠습니다 [1].",
+      "sources": [
+        {
+          "id": 1,
+          "title": "학사일정",
+          "category": "동아광장",
+          "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN173",
+          "published_at": null,
+          "source_type": "static",
+          "source_id": 6432,
+          "checked_at": "2026-10-02T04:20:28Z"
+        }
+      ],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "ok",
+        "department": "전자공학과",
+        "year": "2026",
+        "term": "2",
+        "coverage": "university_calendar_only",
+        "generation_attempts": 1,
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "generation": 9766.8,
+          "total": 10002.9
+        },
+        "llm_calls": 1,
+        "llm_ms": 9741.3
+      },
+      "answer_language": "ko",
+      "source_count": 1,
+      "citation_ids_valid": true,
+      "expected_text_present": {
+        "18:00": false,
+        "18:50": false,
+        "S06-0921": false
+      }
+    },
+    {
+      "id": "exam-chemical",
+      "question": "2026학년도 2학기 화학공학과 반응공학I 02분반 중간고사 시간 강의실 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 6.006,
+      "response_valid": true,
+      "manual_checks": [
+        "보관 상세표 기준 10월 22일 12:00~13:15 S06-0226",
+        "격자표 13:30과 상세표 13:15 차이를 임의로 통합하지 않음"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "2026학년도 2학기 학교 공통 제2학기 중간시험 기간은 2026년 10월 20일(화)부터 10월 26일(월)까지입니다 [1].\n\n다만 이 일정은 학교 공통 시험 기간을 안내하는 것이며, 학과별·과목별 확정 시험 시간표를 뜻하지 않습니다 [1]. 현재 수집된 자료에서는 화학공학과 반응공학I 02분반의 구체적인 시험 시간과 강의실 정보가 아직 확인되지 않았으므로, 공통 시험 기간을 해당 과목의 확정 일정으로 단정할 수 없습니다 [1].\n\n개별 과목의 세부 일정을 찾으신다면 학년과 과목 정보를 함께 알려주시기 바랍니다.",
+      "sources": [
+        {
+          "id": 1,
+          "title": "학사일정",
+          "category": "동아광장",
+          "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN173",
+          "published_at": null,
+          "source_type": "static",
+          "source_id": 6432,
+          "checked_at": "2026-10-02T04:20:28Z"
+        }
+      ],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "ok",
+        "department": "화학공학과",
+        "year": "2026",
+        "term": "2",
+        "coverage": "university_calendar_only",
+        "generation_attempts": 1,
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "generation": 5925.1,
+          "total": 5970.6
+        },
+        "llm_calls": 1,
+        "llm_ms": 5924.8
+      },
+      "answer_language": "ko",
+      "source_count": 1,
+      "citation_ids_valid": true,
+      "expected_text_present": {
+        "12:00": false,
+        "13:15": false,
+        "S06-0226": false
+      }
+    },
+    {
+      "id": "exam-civil",
+      "question": "2026학년도 2학기 건설시스템공학과 토질역학I 02분반 중간고사 언제 어디서 봐?",
+      "language": "auto",
+      "http": 200,
+      "seconds": 7.347,
+      "response_valid": true,
+      "manual_checks": [
+        "보관 원본 기준 10월 22일 09:00~10:15 S12-0302"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "2026학년도 2학기 건설시스템공학과 토질역학I 02분반의 정확한 중간고사 일정 및 시험 장소는 수집된 자료에서 확인되지 않았습니다 [1].\n\n학교 공통 학사일정에 따른 2026학년도 2학기 중간시험 기간은 2026년 10월 20일(화)부터 10월 26일(월)까지입니다 [1]. 이는 학교 공통 시험 기간이며, 해당 학과나 개별 과목의 확정된 시험 시간 및 강의실을 의미하는 것은 아닙니다 [1].\n\n현재 수집된 자료에서는 건설시스템공학과 및 해당 과목의 개별 시험 시간, 강의실 등 세부 정보가 아직 확인되지 않았습니다 [1]. 추가 확인이 필요하다면 학년이나 관련 과목 세부 사항을 문의해 주시기 바랍니다 [1].",
+      "sources": [
+        {
+          "id": 1,
+          "title": "학사일정",
+          "category": "동아광장",
+          "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN173",
+          "published_at": null,
+          "source_type": "static",
+          "source_id": 6432,
+          "checked_at": "2026-10-02T04:20:28Z"
+        }
+      ],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "ok",
+        "department": "건설시스템공학과",
+        "year": "2026",
+        "term": "2",
+        "coverage": "university_calendar_only",
+        "generation_attempts": 1,
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "generation": 7258.1,
+          "total": 7289.6
+        },
+        "llm_calls": 1,
+        "llm_ms": 7257.9
+      },
+      "answer_language": "ko",
+      "source_count": 1,
+      "citation_ids_valid": true,
+      "expected_text_present": {
+        "09:00": false,
+        "10:15": false,
+        "S12-0302": false
+      }
+    },
+    {
+      "id": "calendar-en",
+      "question": "When are the university-wide final exams at Dong-A University for the second semester of 2026?",
+      "language": "auto",
+      "http": 200,
+      "seconds": 3.208,
+      "response_valid": true,
+      "manual_checks": [
+        "영어 질문을 이해하고 영어로 답변",
+        "공식 2026년 2학기 기말시험 기간과 대조"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "Which department’s exam timetable do you need?",
+      "sources": [],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "clarification_required",
+        "query_translated": true,
+        "timings_ms": {
+          "query_preparation": 3102.3,
+          "total": 3162.2
+        },
+        "llm_calls": 1,
+        "llm_ms": 3102.0
+      },
+      "answer_language": "en",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "calendar-ja",
+      "question": "東亜大学の2026年度2学期の期末試験期間はいつですか？",
+      "language": "auto",
+      "http": 200,
+      "seconds": 2.897,
+      "response_valid": true,
+      "manual_checks": [
+        "일본어 질문을 이해하고 일본어로 답변",
+        "공식 2026년 2학기 기말시험 기간과 대조"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "どの学科の試験時間割ですか？",
+      "sources": [],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "clarification_required",
+        "query_translated": true,
+        "timings_ms": {
+          "query_preparation": 2829.0,
+          "total": 2842.4
+        },
+        "llm_calls": 1,
+        "llm_ms": 2828.9
+      },
+      "answer_language": "ja",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "calendar-zh",
+      "question": "东亚大学2026学年第二学期的期末考试时间是什么时候？",
+      "language": "auto",
+      "http": 200,
+      "seconds": 3.086,
+      "response_valid": true,
+      "manual_checks": [
+        "중국어 질문을 이해하고 중국어로 답변",
+        "공식 2026년 2학기 기말시험 기간과 대조"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "您想查询哪个学科的考试安排？",
+      "sources": [],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "clarification_required",
+        "query_translated": true,
+        "timings_ms": {
+          "query_preparation": 3038.1,
+          "total": 3052.9
+        },
+        "llm_calls": 1,
+        "llm_ms": 3037.6
+      },
+      "answer_language": "zh",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "graduation",
+      "question": "동아대 컴퓨터공학과 2023학번 졸업요건 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 7.401,
+      "response_valid": true,
+      "manual_checks": [
+        "학과/학번 적용 근거가 있는 조건만 답함",
+        "현재 공지와 해당 학번 규정을 구분",
+        "개인 졸업 가능 여부를 확정하지 않음"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "AI 답변 생성 중 오류가 발생했습니다. 대신 관련 문서 검색 결과를 표시합니다.",
+      "sources": [
+        {
+          "id": 1,
+          "title": "졸업",
+          "category": "학사안내",
+          "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN137",
+          "published_at": null,
+          "source_type": "static",
+          "source_id": 1,
+          "checked_at": null
+        },
+        {
+          "id": 2,
+          "title": "교과과정 안내",
+          "category": "학사안내",
+          "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN117",
+          "published_at": null,
+          "source_type": "static",
+          "source_id": 6406,
+          "checked_at": null
+        },
+        {
+          "id": 3,
+          "title": "★필독★ 졸업요건 관련 안내(+졸업논문 관련 추가 안내/ 26.03.09 내용 업데이트 완료)",
+          "category": "컴퓨터공학과",
+          "url": "https://computer.donga.ac.kr/computer/CMS/Board/Board.do?mCode=MN044&mode=view&mgr_seq=496&board_seq=8374747",
+          "published_at": "2024-09-04T00:00:00",
+          "source_type": "notice",
+          "source_id": 42,
+          "checked_at": null
+        }
+      ],
+      "debug": {
+        "provider": "gemini",
+        "status": "llm_fallback",
+        "distances": [],
+        "retrieval_mode": "graduation_rules",
+        "department": "컴퓨터공학과",
+        "admission_year": 2023,
+        "error_code": "quota_exceeded",
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "generation": 6464.3,
+          "total": 7356.3
+        },
+        "llm_calls": 1,
+        "llm_ms": 6464.2
+      },
+      "answer_language": "ko",
+      "source_count": 3,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "meals",
+      "question": "오늘 승학캠퍼스 식단 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 0.089,
+      "response_valid": true,
+      "manual_checks": [
+        "한국 날짜와 캠퍼스 일치",
+        "없으면 다른 날 메뉴를 오늘 메뉴로 제공하지 않음",
+        "식당별 식단과 수집 시점 확인"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "2026-10-29 · 승학\n공식 식단표에 등록된 메뉴가 없습니다. 휴무 여부는 확인되지 않았습니다.",
+      "sources": [],
+      "debug": {
+        "status": "not_published",
+        "retrieval_mode": "meals",
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "total": 54.7
+        },
+        "llm_calls": 0,
+        "llm_ms": 0
+      },
+      "answer_language": "ko",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "smalltalk",
+      "question": "오늘 학교 가기 싫네 너무 피곤하다",
+      "language": "auto",
+      "http": 200,
+      "seconds": 3.759,
+      "response_valid": true,
+      "manual_checks": [
+        "자연스럽고 짧은 공감",
+        "휴강/출석 규칙 등을 지어내지 않음"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "피곤할 때 몸을 일으켜 학교 가는 건 정말 힘든 일이죠. 이동하는 동안이나 잠시 빈 시간에라도 편하게 쉬면서 기운을 차릴 수 있으면 좋겠어요.",
+      "sources": [],
+      "debug": {
+        "status": "ok",
+        "retrieval_mode": "smalltalk",
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "classification": 3714.1,
+          "total": 3714.4
+        },
+        "llm_calls": 1,
+        "llm_ms": 3714.1
+      },
+      "answer_language": "ko",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "unknown-year",
+      "question": "2035학년도 2학기 동아대학교 기말시험 확정 날짜 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 0.064,
+      "response_valid": true,
+      "manual_checks": [
+        "수집되지 않은 미래 일정을 만들어내지 않음",
+        "2026년 일정을 2035년 것으로 대체하지 않음"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "어느 학과의 중간·기말고사 시간표를 볼까요? 예: 컴퓨터공학과. 학과를 알려주시면 시험 날짜·시간·강의실을 확인해 드릴게요.",
+      "sources": [],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "clarification_required",
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "total": 10.3
+        },
+        "llm_calls": 0,
+        "llm_ms": 0
+      },
+      "answer_language": "ko",
+      "source_count": 0,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    },
+    {
+      "id": "unknown-section",
+      "question": "2026학년도 2학기 전자공학과 컴퓨터구조 99분반 중간고사 강의실 알려줘",
+      "language": "auto",
+      "http": 200,
+      "seconds": 0.489,
+      "response_valid": true,
+      "manual_checks": [
+        "없는 분반에 다른 분반 강의실을 배정하지 않음",
+        "자료 없음과 시험 없음은 구분"
+      ],
+      "manual_answer_correct": null,
+      "manual_citations_supported": null,
+      "manual_language_correct": null,
+      "answer": "답변 생성 API의 요청 한도에 도달했습니다.\nAI 설명 생성에 실패해, 수집된 시험 자료의 원문을 표시합니다. 아래는 개인별 확정 일정이 아니며 수정 공지와 본인 분반을 함께 확인해야 합니다.\n\n학사일정\n2학기 | 2026. 10. 20.(화)~10. 26.(월) | 제2학기 중간시험\n[학교 공통 기간 / University-wide period] [1]",
+      "sources": [
+        {
+          "id": 1,
+          "title": "학사일정",
+          "category": "동아광장",
+          "url": "https://www.donga.ac.kr/kor/CMS/Contents/Contents.do?mCode=MN173",
+          "published_at": null,
+          "source_type": "static",
+          "source_id": 6432,
+          "checked_at": "2026-10-02T04:20:28Z"
+        }
+      ],
+      "debug": {
+        "retrieval_mode": "exam_schedule",
+        "status": "source_excerpt",
+        "department": "전자공학과",
+        "year": "2026",
+        "term": "2",
+        "coverage": "university_calendar_only",
+        "error_code": "quota_exceeded",
+        "query_translated": false,
+        "timings_ms": {
+          "query_preparation": 0.0,
+          "generation": 414.1,
+          "total": 437.0
+        },
+        "llm_calls": 1,
+        "llm_ms": 414.1
+      },
+      "answer_language": "ko",
+      "source_count": 1,
+      "citation_ids_valid": true,
+      "expected_text_present": {}
+    }
+  ],
+  "summary": {
+    "requests": 12,
+    "valid_responses": 12,
+    "statuses": {
+      "clarification_required": 5,
+      "llm_fallback": 1,
+      "not_published": 1,
+      "ok": 4,
+      "source_excerpt": 1
+    },
+    "median_seconds": 3.1470000000000002,
+    "p95_seconds": 10.047,
+    "answer_accuracy": null,
+    "note": "Response validity, citation IDs and expected substrings do not establish factual accuracy. Manual review required."
+  }
+}

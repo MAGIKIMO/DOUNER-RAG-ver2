@@ -18,7 +18,7 @@ function selectDay(day){
   const content=document.querySelector('#meal-content');content.replaceChildren();
   if(day.checked_at)content.append(node('p',`마지막 확인: ${new Date(day.checked_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})} (한국 시간)`,'micro'));
   if(day.stale)content.append(node('p','오늘 갱신은 아직 확인되지 않았습니다. 이전 수집 자료입니다.','micro'));
-  if(!day.menus.length)content.append(node('p',day.status==='not_collected'?'아직 수집하지 못한 날짜입니다.':'공식 식단표에 등록된 메뉴가 없습니다. 휴무 여부는 확인되지 않았습니다.'));
+  if(!day.menus.length)content.append(node('p',day.status==='not_collected'?'아직 수집하지 못한 날짜입니다.':day.stale?'최신 식단을 확인하지 못했습니다. 이전 수집 뒤 메뉴가 등록됐을 수 있습니다.':'공식 식단표에 등록된 메뉴가 없습니다. 휴무 여부는 확인되지 않았습니다.'));
   for(const item of day.menus){const section=node('section','','meal-menu');section.append(node('h3',`${item.cafeteria} · ${item.type}`),node('pre',item.text));content.append(section);}
   const link=node('a','공식 식단표 보기');link.href=day.url;link.target='_blank';link.rel='noopener noreferrer';content.append(link);
 }
@@ -39,6 +39,8 @@ function render(data){
   while(row.children.length<7)row.append(document.createElement('td'));dayBody.append(row);
   const count=data.days.filter(day=>day.status==='published').length;
   statusLine.textContent=`${count}일분의 메뉴가 있습니다. `+({running:'자료를 갱신 중입니다.',partial:'일부 날짜 갱신에 실패했습니다. 기존 자료는 유지됩니다.',waiting:'첫 수집을 기다리고 있습니다.',ok:'최근 수집 작업을 완료했습니다.'}[data.sync_status]||'');
+  if(data.auto_refresh===false)statusLine.textContent+=' 자동 갱신이 꺼져 있습니다.';
+  if(data.sync_attempted_at)statusLine.textContent+=' 마지막 갱신 시도: '+new Date(data.sync_attempted_at).toLocaleString('ko-KR',{timeZone:'Asia/Seoul'})+' (한국 시간)';
   selectDay(data.days.find(day=>day.date===selectedDate)||data.days.find(day=>day.date===data.today)||data.days[0]);
 }
 async function load(){

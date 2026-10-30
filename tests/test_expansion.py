@@ -79,3 +79,20 @@ def test_small_catalog_does_not_recrawl_unrelated_sources(monkeypatch):
     monkeypatch.setattr(crawl_public, 'crawl_one', crawl)
     crawl_public.run('unused')
     assert seen == [first['url']]
+
+
+def test_daily_boards_only_leaves_static_guides_out(monkeypatch):
+    import json
+    from app import crawl_public
+    common = dict(title='Target', category='A', department='')
+    board = dict(common, url='https://www.donga.ac.kr/board', kind='board')
+    guide = dict(common, url='https://www.donga.ac.kr/guide', kind='static')
+    monkeypatch.setattr(crawl_public, 'Path', lambda p: SimpleNamespace(read_text=lambda encoding: json.dumps({'sources':[board,guide]})))
+    monkeypatch.setattr(crawl_public, 'PublicFetcher', lambda: SimpleNamespace(close=lambda:None))
+    seen = []
+    def crawl(source,*args):
+        seen.append(source.url)
+        return 'success', 1, 1, ''
+    monkeypatch.setattr(crawl_public, 'crawl_one', crawl)
+    crawl_public.run('unused', boards_only=True)
+    assert seen == [board['url']]

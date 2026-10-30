@@ -6,8 +6,9 @@ import time
 from fastapi import APIRouter, HTTPException, Request
 from fastapi.responses import JSONResponse
 from pydantic import BaseModel, Field
-from .canvas_lms import CanvasClient, CanvasError, answer, base_url
-from .canvas_oauth import PrivateQuestion
+from typing import Literal
+from .canvas_lms import CanvasClient, CanvasError, base_url
+from .canvas_assistant import ask_personal
 from .db import digest
 
 router = APIRouter(prefix='/api/v1/personal-canvas')
@@ -65,6 +66,13 @@ class Login(BaseModel):
     admin_key: str = Field(min_length=1,max_length=1000)
 
 
+class PersonalQuestion(BaseModel):
+    course_id: str | None = Field(default=None, pattern=r'^[1-9][0-9]{0,19}$')
+    question: str = Field(min_length=1, max_length=2000)
+    language: Literal['auto', 'ko', 'en', 'ja', 'zh'] = 'auto'
+    consent_to_llm: bool = False
+
+
 @router.post('/login')
 def login(request: Request, body: Login):
     key,_,_=configuration(request)
@@ -118,13 +126,13 @@ def brief(request: Request):
 
 
 @router.post('/ask')
-def ask(request: Request, body: PrivateQuestion):
+def ask(request: Request, body: PersonalQuestion):
     key,_,_=configuration(request);authenticated(request,key)
     if not body.consent_to_llm or not body.question.strip():
         raise HTTPException(422,'질문과 AI 전송 동의를 확인해 주세요.')
     if not slots.acquire(blocking=False):
         raise HTTPException(429,'이전 답변이 끝난 뒤 다시 질문해 주세요.')
     try:
-        return read(request,lambda client:answer(client.course_data(body.course_id),body.question))
+        return read(request,lambda client:ask_personal(client, body.question, body.course_id, body.language))
     finally:
         slots.release()

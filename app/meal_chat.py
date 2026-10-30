@@ -52,7 +52,12 @@ def answer_meal(question, language, context):
             reason={'en':'The menu has not been collected yet.' if item['status']=='not_collected' else 'The official page has no published menu. This does not establish that the cafeteria is closed.',
                     'ja':'献立は未収集、または公式ページに未登録です。休業を意味するものではありません。',
                     'zh':'菜单尚未收集或官方尚未发布。这不代表食堂休息。'}[language]
-        result={'answer':f'{target.isoformat()} · {CAMPUS[campus]}\n{reason}','sources':[], 'debug_info':{'status':item['status'],'retrieval_mode':'meals'}}
+        if item['stale']:
+            reason={'ko':'이 날짜의 최신 식단을 아직 확인하지 못했습니다. 이전 수집 때는 메뉴가 없었지만 이후 등록됐을 수 있습니다.',
+                    'en':'The menu for this date has not been refreshed. It was empty at the previous check, but may have been published since.',
+                    'ja':'この日の最新の献立は未確認です。前回取得時は未登録でしたが、その後公開された可能性があります。',
+                    'zh':'尚未确认该日期的最新菜单。上次查询时未发布，但之后可能已经更新。'}[language]
+        result={'answer':f'{target.isoformat()} · {CAMPUS[campus]}\n{reason}','sources':[], 'debug_info':{'status':'refresh_required' if item['stale'] else item['status'],'retrieval_mode':'meals'}}
     else:
         body=f"날짜: {target.isoformat()}\n캠퍼스: {CAMPUS[campus]}\n마지막 확인(UTC): {item['checked_at']}\n"
         body+='\n\n'.join(f"{m['cafeteria']} / {m['type']}\n{m['text']}" for m in item['menus'])

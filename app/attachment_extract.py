@@ -31,6 +31,14 @@ def extract_pdf(blob):
             readable = len(''.join(text.split())) >= 20 and '\ufffd' not in text and '(cid:' not in text and not large_image
             if not readable:
                 content = ''
+            elif hasattr(page, 'find_tables'):
+                from .exam_tables import records, pdf_matrix
+                from .exam_records import encode
+                schedules = []
+                for table_number, table in enumerate(page.find_tables(), 1):
+                    schedules.extend(records(pdf_matrix(table), f'PDF {number}쪽 표 {table_number}'))
+                if schedules:
+                    content += '\n\n'+encode(schedules)
             total += len(content)
             if total > MAX_CHARS:
                 raise ValueError('too_much_text')

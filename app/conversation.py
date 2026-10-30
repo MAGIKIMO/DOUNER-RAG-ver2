@@ -19,6 +19,10 @@ def changed_topic(question, previous_question):
 def is_smalltalk(question):
     return not SCHOOL.search(question) and bool(CASUAL.fullmatch(question.strip()))
 
+def clear_school_question(question):
+    return bool(re.search(r'졸업|장학|등록금|수강|휴학|복학|도서관|식단|학식|공지|학사|기숙사|생활관', question)
+                and re.search(r'언제|몇\s*(?:시|학점)|기간|마감|조건|요건|절차|방법|서류|시간표|메뉴|알려|신청|최근|최신|필요', question))
+
 
 def conversational_answer(question, language, history):
     names={'ko':'Korean','en':'English','ja':'Japanese','zh':'Simplified Chinese'}

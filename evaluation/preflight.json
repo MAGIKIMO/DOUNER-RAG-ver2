@@ -1,0 +1,73 @@
+{
+  "checked_at": "2026-10-29T16:50:44.463841+00:00",
+  "preflight": [
+    {
+      "check": "dependencies",
+      "passed": true,
+      "http": 200,
+      "seconds": 0.093,
+      "data": {
+        "status": "ok",
+        "components": {
+          "api": "ok",
+          "mysql": "ok",
+          "chroma": "ok",
+          "index": "ready"
+        },
+        "build_id": "88422d741aa9c4862f42"
+      }
+    },
+    {
+      "check": "running_build_matches_source",
+      "passed": true,
+      "expected": "88422d741aa9c4862f42",
+      "actual": "88422d741aa9c4862f42"
+    },
+    {
+      "check": "/chat.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/personal-demo.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/tasks.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/meals.html",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "/manifest.webmanifest",
+      "passed": true,
+      "http": 200
+    },
+    {
+      "check": "empty_question_rejected",
+      "passed": true,
+      "http": 422
+    },
+    {
+      "check": "anonymous_lms_denied",
+      "passed": true,
+      "http": 401
+    }
+  ],
+  "cases": [],
+  "summary": {
+    "requests": 0,
+    "valid_responses": 0,
+    "behavior_checks_passed": 0,
+    "statuses": {},
+    "median_seconds": null,
+    "p95_seconds": null,
+    "answer_accuracy": null,
+    "note": "Response validity, citation IDs and expected substrings do not establish factual accuracy. Manual review required."
+  }
+}

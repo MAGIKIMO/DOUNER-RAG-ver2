@@ -22,8 +22,10 @@
       if(!data.authenticated)return;
       $('private-panel').hidden=false;
       const result=await api('courses');if(version!==epoch)return;
+      if(demo){const option=document.createElement('option');option.value='';option.textContent='전체 과목 · 질문에서 자동 선택';$('canvas-course').append(option);}
       for(const c of result.courses){const option=document.createElement('option');option.value=c.id;option.textContent=c.name+(c.term?' · '+c.term:'');$('canvas-course').append(option);}
       $('course-status').textContent=!result.complete?'목록 일부만 조회되었습니다.':result.courses.length?'조회된 과목을 선택해 주세요.':'조회 가능한 활성 수강 과목이 없습니다.';
+      if(demo&&result.complete&&result.courses.length)$('course-status').textContent='과목명을 질문에 쓰면 자동으로 찾습니다. 분반이 여러 개거나 과목명이 다르면 직접 선택하세요.';
       if(demo)window.dispatchEvent(new CustomEvent('personal-demo-session',{detail:true}));
     }catch(error){if(version===epoch)status.textContent=error.message;}
   }
@@ -46,13 +48,19 @@
   $('private-form').addEventListener('submit',async event=>{
     event.preventDefault();const version=epoch;$('private-send').disabled=true;$('private-answer').textContent='과목 자료를 조회하고 답변하는 중…';$('private-sources').replaceChildren();
     try{
-      const data=await api('ask',{course_id:$('canvas-course').value,question:$('private-question').value.trim(),consent_to_llm:$('private-consent').checked});
+      const args={course_id:$('canvas-course').value,question:$('private-question').value.trim(),consent_to_llm:$('private-consent').checked};
+      if(demo){args.course_id=args.course_id||null;args.language=$('private-language').value;}
+      const data=await api('ask',args);
       if(version!==epoch)return;
       $('private-answer').textContent=data.answer;
-      for(const source of data.sources||[]){const url=new URL(source.url);if(url.protocol!=='https:'||!url.hostname.endsWith('.donga.ac.kr'))continue;const li=document.createElement('li'),a=document.createElement('a');a.textContent=source.title;a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';li.append(a);$('private-sources').append(li);}
+      for(const source of data.sources||[]){const url=new URL(source.url);if(url.protocol!=='https:'||!url.hostname.endsWith('.donga.ac.kr'))continue;const li=document.createElement('li'),a=document.createElement('a');li.value=source.id;a.textContent=source.title;a.href=url.href;a.target='_blank';a.rel='noopener noreferrer';li.append(a);$('private-sources').append(li);}
     }catch(error){if(version===epoch)$('private-answer').textContent=error.message;}
     finally{$('private-send').disabled=false;}
   });
+  document.querySelectorAll('[data-personal-question]').forEach(button=>button.addEventListener('click',()=>{
+    $('private-question').value=button.dataset.personalQuestion;
+    $('canvas-course').value='';$('private-question').focus();
+  }));
   window.addEventListener('pagehide',clearPrivate);
   window.addEventListener('pageshow',event=>{if(event.persisted)load();});
   const outcome=new URLSearchParams(location.search).get('oauth');

@@ -1,4 +1,28 @@
 from app import query_language, rag_service
+import pytest
+
+@pytest.mark.parametrize('question,expected', [('中間試験はいつですか？','ja'),('期中考试什么时候？','zh'),('When is the midterm?','en'),('중간고사 언제야','ko')])
+def test_detect_languages(question,expected):
+    assert query_language.detect_language(question)==expected
+
+@pytest.mark.parametrize('question', ['コンピュータ工学科の中間試験の日程は？','计算机工程系的期中考试时间表是什么？','計算機工程系的期中考試時間表是什麼？'])
+def test_asian_queries_are_translated(monkeypatch,question):
+    calls=[]
+    def translate(*args):
+        calls.append(args)
+        return '{"query":"컴퓨터공학과 중간고사 시간표 알려줘"}'
+    monkeypatch.setattr(query_language,'generate_answer',translate)
+    assert '컴퓨터공학과' in query_language.korean_search_query(question)
+    assert len(calls)==1
+
+def test_numeric_followup_keeps_language():
+    assert query_language.detect_language('2023',{'history':[{'role':'user','content':'卒業要件は？'}]})=='ja'
+
+@pytest.mark.parametrize('lang', ['ja','zh','en'])
+def test_error_responses_localized(monkeypatch,lang):
+    monkeypatch.setattr(query_language,'korean_search_query',lambda q:q)
+    monkeypatch.setattr(rag_service,'_answer_question',lambda *args:{'answer':'한국어 오류','debug_info':{'status':'no_results'}})
+    assert '한국어' not in rag_service.answer_question('test',lang)['answer']
 
 def test_english_exam_normalized(monkeypatch):
     monkeypatch.setattr(query_language,'generate_answer',lambda *args:'{"query":"2026년 2학기 컴퓨터공학과 컴퓨터네트워크 중간고사 언제야?"}')

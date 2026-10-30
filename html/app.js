@@ -3,7 +3,7 @@ const form = document.querySelector("#chat-form");
 const input = document.querySelector("#question");
 const messages = document.querySelector("#messages");
 const send = document.querySelector("#send");
-let language = "ko";
+let language = "auto";
 let languageSelected = false;
 let busy = false;
 let conversationContext = null;
@@ -56,6 +56,9 @@ function addSources(article, sources) {
     }
     const saveButton = window.StudentUI?.sourceButton(source);
     if (saveButton && source.source_type !== "meal") row.append(saveButton);
+    if(source.source_type==='notice' && Number.isInteger(source.source_id)){
+      const taskLink=element('a','','내 할 일 만들기 →');taskLink.href='tasks.html?notice='+source.source_id;row.append(taskLink);
+    }
     section.append(row);
   }
   article.append(section);
@@ -64,7 +67,7 @@ document.querySelectorAll("[data-lang]").forEach(button => button.addEventListen
   language = button.dataset.lang;
   languageSelected = true;
   document.querySelectorAll("[data-lang]").forEach(item => item.setAttribute("aria-pressed", String(item === button)));
-  input.placeholder = samples[language];
+  input.placeholder = samples[language] || samples.ko;
 }));
 document.querySelectorAll("[data-question]").forEach(button => button.addEventListener("click", () => {
   if (busy) return;
@@ -86,33 +89,58 @@ form.addEventListener("submit", async event => {
   event.preventDefault();
   const question = input.value.trim();
   if (!question || busy) return;
-  const selectedLanguage = languageSelected ? language : (/[a-z]/i.test(question) && !/[가-힣ぁ-んァ-ン一-龥]/.test(question) ? 'en' : language);
+  const selectedLanguage = language;
+  const uiLanguage = selectedLanguage === 'auto' ? (/[ぁ-んァ-ン]/.test(question) ? 'ja' : /[가-힣]/.test(question) ? 'ko' : /[一-龥]/.test(question) ? 'zh' : /[a-z]/i.test(question) ? 'en' : 'ko') : selectedLanguage;
+  const notices = {
+    ko:['답변 생성 중…','요청이 많습니다. 잠시 후 다시 질문해 주세요.','서버에 연결하지 못했습니다. 다시 시도해 주세요.','답변을 읽지 못했습니다.','응답 시간이 길어지고 있습니다. 다시 시도해 주세요.','네트워크 연결을 확인해 주세요.','월별 식단 보기'],
+    en:['Generating an answer…','Too many requests. Please try again shortly.','Unable to reach the server. Please try again.','Unable to read the answer.','The request timed out. Please try again.','Please check your network connection.','View monthly menus'],
+    ja:['回答を作成中…','リクエストが集中しています。しばらくしてから再度お試しください。','サーバーに接続できません。再度お試しください。','回答を読み取れませんでした。','応答がタイムアウトしました。再度お試しください。','ネットワーク接続をご確認ください。','月間メニューを見る'],
+    zh:['正在生成回答…','请求过多，请稍后重试。','无法连接服务器，请重试。','无法读取回答。','请求超时，请重试。','请检查网络连接。','查看月度菜单']
+  }[uiLanguage];
   busy = true; send.disabled = true;
   document.querySelector("#clear-chat").disabled = true;
   addMessage("user", question);
   input.value = ""; updateCount();
-  const pending = addMessage("assistant", "답변 생성 중…");
+  const pending = addMessage("assistant", notices[0]);
   pending.setAttribute("aria-busy", "true");
   const controller = new AbortController();
   const timer = setTimeout(() => controller.abort(), 120000);
   try {
-    const response = await fetch("/api/v1/ask", {method:"POST", headers:{"Content-Type":"application/json"},body:JSON.stringify({question,language:selectedLanguage,category:document.querySelector("#category").value || null,search_mode:document.querySelector("#search-mode").value,conversation_context:window.StudentUI?.context(conversationContext) || conversationContext}),signal:controller.signal});
-    if (!response.ok) throw new Error(response.status === 429 ? "요청이 많습니다. 잠시 후 다시 질문해 주세요." : "서버에 연결하지 못했습니다. 잠시 후 다시 시도해 주세요.");
-    const data = await response.json();
-    if (typeof data.answer !== "string") throw new Error("답변을 읽지 못했습니다. 다시 시도해 주세요.");
+    const options = {method:"POST", headers:{"Content-Type":"application/json"},body:JSON.stringify({question,language:selectedLanguage,category:document.querySelector("#category").value || null,search_mode:document.querySelector("#search-mode").value,conversation_context:window.StudentUI?.context(conversationContext) || conversationContext}),signal:controller.signal};
+    let response = await fetch('/api/v1/ask/stream',options);
+    if(response.status===404)response=await fetch('/api/v1/ask',options);
+    if (!response.ok) throw new Error(response.status === 429 ? notices[1] : notices[2]);
+    let partial='';
+    const phases={ko:['질문을 이해하고 있어요…','학교 자료를 찾고 있어요…','근거를 읽고 답변하는 중…'],en:['Understanding your question…','Searching school documents…','Writing an answer from the sources…'],ja:['質問を確認しています…','学校の資料を検索中…','資料に基づいて回答を作成中…'],zh:['正在理解问题…','正在检索学校资料…','正在根据资料生成回答…']}[uiLanguage];
+    const data = response.headers.get('content-type')?.includes('application/x-ndjson') ? await readAnswerStream(response,event=>{
+      if(event.type==='reset'){partial='';pending.querySelector('.bubble').textContent=notices[0];}
+      if(event.type==='phase'&&!partial)pending.querySelector('.bubble').textContent=phases[event.phase==='query_preparation'?0:event.phase==='generation'?2:1];
+      if(event.type==='answer_delta'){partial+=event.text;pending.querySelector('.bubble').textContent=partial;scrollMessages();}
+    }) : await response.json();
+    if (typeof data.answer !== "string") throw new Error(notices[3]);
     conversationContext = data.conversation_context || null;
     pending.querySelector(".bubble").textContent = data.answer;
-    pending.querySelector(".bubble").lang = selectedLanguage;
+    pending.querySelector(".bubble").lang = data.answer_language || uiLanguage;
+    if (Array.isArray(data.source_excerpts)) {
+      const label = {ko:'추출 원문 보기',en:'Show extracted source',ja:'抽出した原文を表示',zh:'查看提取原文'}[data.answer_language || uiLanguage] || '추출 원문 보기';
+      for (const excerpt of data.source_excerpts.slice(0,2)) {
+        if (typeof excerpt.text !== 'string') continue;
+        const details = element('details','source-preview');
+        details.append(element('summary','',label + ' · ' + (excerpt.title || '')));
+        details.append(element('pre','',excerpt.text.slice(0,3000)));
+        pending.append(details);
+      }
+    }
     addSources(pending, data.sources);
     const reportButton = window.StudentUI?.reportButton(question, data);
     if (reportButton) pending.append(reportButton);
     if (typeof data.meal_calendar === 'string' && /^meals\.html\?month=20\d{2}-\d{2}&campus=[12]$/.test(data.meal_calendar)) {
-      const calendarLink = element('a', '', '월별 식단 보기');
+      const calendarLink = element('a', '', notices[6]);
       calendarLink.href = data.meal_calendar;
       pending.append(calendarLink);
     }
   } catch (error) {
-    pending.querySelector(".bubble").textContent = error.name === "AbortError" ? "응답 시간이 길어지고 있습니다. 잠시 후 다시 시도해 주세요." : (error instanceof TypeError ? "네트워크 연결을 확인하고 다시 시도해 주세요." : error.message);
+    pending.querySelector(".bubble").textContent = error.name === "AbortError" ? notices[4] : (error instanceof TypeError ? notices[5] : error.status===429?notices[1]:notices[2]);
     input.value = question; updateCount();
   } finally {
     clearTimeout(timer); pending.removeAttribute("aria-busy"); busy = false; send.disabled = false;

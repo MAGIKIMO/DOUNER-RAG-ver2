@@ -19,7 +19,8 @@
         const link=el('a','공식 원문');try{const url=new URL(item.url);if(url.protocol==='https:'&&url.hostname.endsWith('.donga.ac.kr')){link.href=url.href;link.target='_blank';link.rel='noopener noreferrer';card.append(link);}}catch{}
         const button=el('button','내용·신청 조건 설명하기');button.type='button';const answer=el('div','');answer.className='notice-answer';answer.setAttribute('aria-live','polite');
         button.addEventListener('click',async()=>{button.disabled=true;answer.textContent='본문과 추출된 첨부자료를 읽는 중…';try{const result=await post(item.id+'/summary');if(version===epoch&&active){answer.textContent=result.answer;const list=el('ul','');for(const source of result.sources||[]){const u=new URL(source.url);if(u.protocol!=='https:'||!u.hostname.endsWith('.donga.ac.kr'))continue;const li=el('li',''),a=el('a','['+source.id+'] '+source.title);a.href=u.href;a.target='_blank';a.rel='noopener noreferrer';li.append(a);list.append(li);}answer.append(list);}}catch(e){if(version===epoch&&active)answer.textContent=e.message;}finally{button.disabled=false;}});
-        card.append(button,answer);$('interest-results').append(card);
+        const taskLink=el('a','내 할 일 만들기 →');taskLink.href='tasks.html?notice='+encodeURIComponent(item.id);
+        card.append(button,taskLink,answer);$('interest-results').append(card);
       }
     }catch(e){if(version===epoch)$('interest-status').textContent=e.message;}
   }
